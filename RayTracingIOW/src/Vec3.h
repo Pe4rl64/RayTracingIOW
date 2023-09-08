@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iosfwd>
+
 class Vec3
 {
 public:
@@ -24,9 +26,5 @@ public:
 
 	float x, y, z;
 };
-
-namespace std {
-	class ostream;
-}
 
 std::ostream& operator<<(std::ostream& stream, const Vec3& vector);

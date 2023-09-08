@@ -64,4 +64,5 @@ float Vec3::length() const
 std::ostream& operator<<(std::ostream& stream, const Vec3& vector)
 {
 	stream << vector.x << ' ' << vector.y << ' ' << vector.z;
+	return stream;
 }
