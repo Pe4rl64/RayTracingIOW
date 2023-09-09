@@ -30,8 +30,8 @@ public:
 	bool operator==(const Vec3& other) const = default;
 
 	float length() const;
-	float cross(const Vec3& other) const;
 	float dot(const Vec3& other) const;
+	Vec3 cross(const Vec3& other) const;
 	Vec3 unitVector() const;
 
 	float x, y, z;
