@@ -5,11 +5,9 @@
 class Vec3
 {
 public:
-	Vec3()
-		: x(0), y(0), z(0) {}
+	Vec3();
 
-	Vec3(float x, float y, float z)
-		: x(x), y(y), z(z) {}
+	Vec3(float x, float y, float z);
 
 	Vec3 operator+(const Vec3& other) const;
 	Vec3 operator-() const;
@@ -36,7 +34,5 @@ public:
 
 	float x, y, z;
 };
-
-
 
 std::ostream& operator<<(std::ostream& stream, const Vec3& vector);
