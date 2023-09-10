@@ -22,10 +22,10 @@ int main()
 	std::ofstream image("res/image.ppm");
 
 	float aspectRatio = 16.0f / 9.0f; // ideal aspect ratio
-	uint32_t imageWidth = 400;
+	int imageWidth = 400;
 
 	// Calculating image height, which must be at least 1
-	uint32_t imageHeight = static_cast<int>(imageWidth / aspectRatio);
+	int imageHeight = static_cast<int>(imageWidth / aspectRatio);
 	
 	if (imageHeight < 1)
 		imageHeight = 1;
@@ -61,9 +61,11 @@ int main()
 	{
 		std::cout << "Scanlines remaining: " << imageHeight - i << "\n";
 
+		Point3 pixelCurrentVertical = i * pixelDeltaVertical;
+
 		for (int j = 0; j < imageWidth; j++)
 		{
-			Point3 pixelCurrent = pixelUpperLeft + (j * pixelDeltaHorizontal) + (i * pixelDeltaVertical);
+			Point3 pixelCurrent = pixelUpperLeft + (j * pixelDeltaHorizontal) + pixelCurrentVertical;
 			Vec3 rayDirection = cameraCenter + pixelCurrent;
 			Ray ray(cameraCenter, rayDirection);
 			
