@@ -11,6 +11,8 @@ public:
 
 	Color(float r, float g, float b);
 
+	Color(const Vec3& vector);
+
 	float &r, &g, &b;
 };
 

@@ -8,7 +8,9 @@
 
 Color rayColor(const Ray& ray)
 {
-	return Color(0, 0, 0);
+	Vec3 unitDirection = ray.getDirection().unitVector();
+	float a = (unitDirection.y + 1) / 2;
+	return (1 - a) * Color(1, 1, 1) + a * Color(0.5, 0.7, 1.0);
 }
 
 Color randomRayColor(const Ray& ray)
@@ -22,7 +24,7 @@ int main()
 	std::ofstream image("res/image.ppm");
 
 	float aspectRatio = 16.0f / 9.0f; // ideal aspect ratio
-	int imageWidth = 400;
+	int imageWidth = 800;
 
 	// Calculating image height, which must be at least 1
 	int imageHeight = static_cast<int>(imageWidth / aspectRatio);
@@ -65,11 +67,13 @@ int main()
 
 		for (int j = 0; j < imageWidth; j++)
 		{
-			Point3 pixelCurrent = pixelUpperLeft + (j * pixelDeltaHorizontal) + pixelCurrentVertical;
+			Point3 pixelCurrentHorizontal = j * pixelDeltaHorizontal;
+
+			Point3 pixelCurrent = pixelUpperLeft + pixelCurrentHorizontal + pixelCurrentVertical;
 			Vec3 rayDirection = cameraCenter + pixelCurrent;
 			Ray ray(cameraCenter, rayDirection);
-			
-			image << randomRayColor(ray) << '\n';
+
+			image << rayColor(ray) << '\n';
 		}
 	}
 

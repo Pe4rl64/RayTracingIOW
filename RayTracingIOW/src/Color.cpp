@@ -12,6 +12,11 @@ Color::Color(float r, float g, float b)
 {
 }
 
+Color::Color(const Vec3& vector)
+	: Vec3(vector), r(x), g(y), b(z)
+{
+}
+
 std::ostream& operator<<(std::ostream& stream, const Color& color)
 {
 	stream << static_cast<int>(color.r * 255)
