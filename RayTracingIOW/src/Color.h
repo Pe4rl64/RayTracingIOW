@@ -2,19 +2,36 @@
 
 #include <iosfwd>
 
-#include "Vec3.h"
+#include "Color.h"
 
-class Color : public Vec3
+class Color
 {
 public:
 	Color();
 
 	Color(float r, float g, float b);
 
-	Color(const Vec3& vector);
+	Color operator+(const Color& other) const;
+	Color operator-() const;
+	Color operator-(const Color& other) const;
+	Color operator*(const Color& other) const;
+	Color operator*(float scalar) const;
+	Color operator/(const Color& other) const;
+	Color operator/(float scalar) const;
 
-	float &r, &g, &b;
+	void operator+=(const Color& other);
+	void operator-=(const Color& other);
+	void operator*=(const Color& other);
+	void operator*=(float scalar);
+	void operator/=(const Color& other);
+	void operator/=(float scalar);
+
+	bool operator==(const Color& other) const = default;
+
+	float r, g, b;
 };
+
+Color operator*(float scalar, const Color& vector);
 
 /// <summary>
 /// Pushes the translated color values to the output stream [0, 255].
