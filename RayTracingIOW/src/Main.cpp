@@ -6,11 +6,26 @@
 #include "Point3.h"
 #include "Ray.h"
 
+bool hitSphere(const Point3& center, float radius, const Ray& ray)
+{
+	Vec3 oc = ray.getOrigin() - center; // (A - C)
+	float a = ray.getDirection().dot(ray.getDirection()); // a . a
+	float b = 2.0f * ray.getDirection().dot(oc); // 2b . (A - C)
+	float c = oc.dot(oc) - radius * radius; // (A - C) . (A - C) - r^2
+
+	float discriminant = b * b - 4 * a * c; // b^2 - 4ac
+
+	return discriminant >= 0;
+}
+
 Color rayColor(const Ray& ray)
 {
+	if (hitSphere(Point3(0, 0, -1), 0.5f, ray))
+		return Color(1, 0, 0);
+
 	Vec3 unitDirection = ray.getDirection().unitVector();
 	float a = (unitDirection.y + 1) / 2;
-	return (1 - a) * Color(1, 1, 1) + a * Color(0.5, 0.7, 1.0);
+	return (1 - a) * Color(1, 1, 1) + a * Color(0.5f, 0.7f, 1.0f);
 }
 
 Color randomRayColor(const Ray& ray)

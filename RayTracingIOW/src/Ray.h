@@ -22,3 +22,13 @@ private:
 	Point3 m_origin;
 	Vec3 m_direction;
 };
+
+inline Point3 Ray::getOrigin() const
+{
+	return m_origin;
+}
+
+inline Vec3 Ray::getDirection() const
+{
+	return m_direction;
+}
