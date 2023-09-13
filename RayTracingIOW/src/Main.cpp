@@ -1,27 +1,38 @@
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 #include "Vec3.h"
 #include "Color.h"
 #include "Point3.h"
 #include "Ray.h"
 
-bool hitSphere(const Point3& center, float radius, const Ray& ray)
+float hitSphere(const Point3& center, float radius, const Ray& ray)
 {
 	Vec3 oc = ray.getOrigin() - center; // (A - C)
 	float a = ray.getDirection().dot(ray.getDirection()); // a . a
-	float b = 2.0f * ray.getDirection().dot(oc); // 2b . (A - C)
+	float b = 2 * ray.getDirection().dot(oc); // 2b . (A - C)
 	float c = oc.dot(oc) - radius * radius; // (A - C) . (A - C) - r^2
 
 	float discriminant = b * b - 4 * a * c; // b^2 - 4ac
 
-	return discriminant >= 0;
+	if (discriminant < 0)
+		return -1;
+
+	return ((-b - std::sqrtf(discriminant)) / (2 * a)); // smallest t
 }
 
 Color rayColor(const Ray& ray)
 {
-	if (hitSphere(Point3(0, 0, -1), 0.5f, ray))
-		return Color(1, 0, 0);
+	Point3 sphereCenter(0, 0, -1);
+
+	float t = hitSphere(sphereCenter, 0.5f, ray);
+
+	if (t > 0) // We don't care about negative t (collisions behind the camera)
+	{
+		Vec3 normal = (ray.at(t) - sphereCenter).unitVector();
+		return Color(normal.x + 1, normal.y + 1, normal.z + 1) / 2;
+	}
 
 	Vec3 unitDirection = ray.getDirection().unitVector();
 	float a = (unitDirection.y + 1) / 2;
@@ -36,7 +47,7 @@ Color randomRayColor(const Ray& ray)
 int main()
 {
 	// Image
-	std::ofstream image("res/image.ppm");
+	std::ofstream image("renders/image.ppm");
 
 	float aspectRatio = 16.0f / 9.0f; // ideal aspect ratio
 	int imageWidth = 800;
