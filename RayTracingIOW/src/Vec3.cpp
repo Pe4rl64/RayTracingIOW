@@ -97,7 +97,12 @@ void Vec3::operator/=(float scalar)
 
 float Vec3::length() const
 {
-	return std::sqrtf(x * x + y * y + z * z);
+	return std::sqrtf(lengthSquared());
+}
+
+float Vec3::lengthSquared() const
+{
+	return x * x + y * y + z * z;
 }
 
 float Vec3::dot(const Vec3& other) const

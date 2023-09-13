@@ -10,9 +10,9 @@
 float hitSphere(const Point3& center, float radius, const Ray& ray)
 {
 	Vec3 oc = ray.getOrigin() - center; // (A - C)
-	float a = ray.getDirection().dot(ray.getDirection()); // a . a
+	float a = ray.getDirection().lengthSquared(); // a . a == length squared
 	float halfB = ray.getDirection().dot(oc); // b . (A - C)
-	float c = oc.dot(oc) - radius * radius; // (A - C) . (A - C) - r^2
+	float c = oc.lengthSquared() - radius * radius; // (A - C) . (A - C) - r^2
 
 	float discriminant = halfB * halfB - a * c; // halfB^2 - ac
 
