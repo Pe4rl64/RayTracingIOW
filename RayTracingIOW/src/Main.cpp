@@ -11,15 +11,15 @@ float hitSphere(const Point3& center, float radius, const Ray& ray)
 {
 	Vec3 oc = ray.getOrigin() - center; // (A - C)
 	float a = ray.getDirection().dot(ray.getDirection()); // a . a
-	float b = 2 * ray.getDirection().dot(oc); // 2b . (A - C)
+	float halfB = ray.getDirection().dot(oc); // b . (A - C)
 	float c = oc.dot(oc) - radius * radius; // (A - C) . (A - C) - r^2
 
-	float discriminant = b * b - 4 * a * c; // b^2 - 4ac
+	float discriminant = halfB * halfB - a * c; // halfB^2 - ac
 
 	if (discriminant < 0)
 		return -1;
 
-	return ((-b - std::sqrtf(discriminant)) / (2 * a)); // smallest t
+	return (-halfB - std::sqrtf(discriminant)) / a; // (-halfB - sqrt(halfB^2 - ac)) / a (- instead of +- because we care about the closest intersection)
 }
 
 Color rayColor(const Ray& ray)
@@ -28,7 +28,7 @@ Color rayColor(const Ray& ray)
 
 	float t = hitSphere(sphereCenter, 0.5f, ray);
 
-	if (t > 0) // We don't care about negative t (collisions behind the camera)
+	if (t > 0) // We don't care about t < 0 (collisions behind the camera)
 	{
 		Vec3 normal = (ray.at(t) - sphereCenter).unitVector();
 		return Color(normal.x + 1, normal.y + 1, normal.z + 1) / 2;
