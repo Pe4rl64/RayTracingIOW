@@ -159,10 +159,13 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Point3.h" />
     <ClCompile Include="src\Ray.cpp" />
+    <ClCompile Include="src\Sphere.cpp" />
     <ClCompile Include="src\Vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Sphere.h" />
     <ClInclude Include="src\Color.h" />
+    <ClInclude Include="src\Hittable.h" />
     <ClInclude Include="src\Ray.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Vec3.h" />
