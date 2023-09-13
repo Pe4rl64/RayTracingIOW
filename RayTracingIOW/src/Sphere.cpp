@@ -26,7 +26,8 @@ std::tuple<bool, HitRecord> Sphere::hit(const Ray& ray, float minT, float maxT) 
 
 	float rootedDiscriminant = sqrtf(discriminant);
 
-	float root = (-halfB - rootedDiscriminant) / a; // nearest root
+	// Determining the nearest root in range
+	float root = (-halfB - rootedDiscriminant) / a; 
 
 	if (root <= minT || root >= maxT)
 	{
