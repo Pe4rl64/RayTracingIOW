@@ -31,6 +31,10 @@ public:
 	float dot(const Vec3& other) const;
 	Vec3 cross(const Vec3& other) const;
 	Vec3 unitVector() const;
+	void normalize();
+
+	static float dot(const Vec3& x, const Vec3& y);
+	static Vec3 cross(const Vec3& x, const Vec3& y);
 
 	float x, y, z;
 };

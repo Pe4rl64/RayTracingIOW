@@ -122,6 +122,21 @@ Vec3 Vec3::unitVector() const
 	return (*this) / length();
 }
 
+void Vec3::normalize()
+{
+	(*this) /= length();
+}
+
+float Vec3::dot(const Vec3& x, const Vec3& y)
+{
+	return x.dot(y);
+}
+
+Vec3 Vec3::cross(const Vec3& x, const Vec3& y)
+{
+	return x.cross(y);
+}
+
 std::ostream& operator<<(std::ostream& stream, const Vec3& vector)
 {
 	stream << vector.x << ' ' << vector.y << ' ' << vector.z;
