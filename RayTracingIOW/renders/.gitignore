@@ -1,0 +1,3 @@
+#Ignore rendered files except .gitignore
+*
+!.gitignore
