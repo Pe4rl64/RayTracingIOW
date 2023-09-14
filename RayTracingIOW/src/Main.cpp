@@ -2,46 +2,27 @@
 #include <fstream>
 #include <cmath>
 
-#include "Vec3.h"
 #include "Color.h"
-#include "Point3.h"
-#include "Ray.h"
+#include "Hittable.h"
+#include "HittableList.h"
+#include "Sphere.h"
+#include "Utils.h"
 
-float hitSphere(const Point3& center, float radius, const Ray& ray)
+// TODO: Put all project related classes inside a namespace for organization
+
+Color rayColor(const Ray& ray, const Hittable& world)
 {
-	Vec3 oc = ray.getOrigin() - center; // (A - C)
-	float a = ray.getDirection().lengthSquared(); // a . a == length squared
-	float halfB = Vec3::dot(ray.getDirection(), oc); // b . (A - C)
-	float c = oc.lengthSquared() - radius * radius; // (A - C) . (A - C) - r^2
+	auto [hit, record] = world.hit(ray, 0, infinity);
 
-	float discriminant = halfB * halfB - a * c; // halfB^2 - ac
-
-	if (discriminant < 0)
-		return -1;
-
-	return (-halfB - std::sqrtf(discriminant)) / a; // (-halfB - sqrt(halfB^2 - ac)) / a (- instead of +- because we care about the closest intersection)
-}
-
-Color rayColor(const Ray& ray)
-{
-	Point3 sphereCenter(0, 0, -1);
-
-	float t = hitSphere(sphereCenter, 0.5f, ray);
-
-	if (t > 0) // We don't care about t < 0 (collisions behind the camera)
+	if (hit)
 	{
-		Vec3 normal = (ray.at(t) - sphereCenter).unitVector();
-		return Color(normal.x + 1, normal.y + 1, normal.z + 1) / 2;
+		return (Color(record.normal.x, record.normal.y, record.normal.z)
+			+ Color(1, 1, 1)) / 2;
 	}
 
 	Vec3 unitDirection = ray.getDirection().unitVector();
 	float a = (unitDirection.y + 1) / 2;
 	return (1 - a) * Color(1, 1, 1) + a * Color(0.5f, 0.7f, 1.0f);
-}
-
-Color randomRayColor(const Ray& ray)
-{
-	return Color(static_cast<float>((rand() % 256)) / 255, static_cast<float>((rand() % 256)) / 255, static_cast<float>((rand() % 256)) / 255);
 }
 
 int main()
@@ -82,6 +63,12 @@ int main()
 	Point3 pixelUpperLeft = viewportUpperLeft
 		+ ((pixelDeltaHorizontal + pixelDeltaVertical) / 2);
 
+	// World
+	HittableList world;
+
+	world.add(std::make_shared<Sphere>(Point3(0, 0, -1), 0.5f));
+	world.add(std::make_shared<Sphere>(Point3(0, -100.5f, -1), 100));
+
 	// Render
 	image << "P3\n" << imageWidth << ' ' << imageHeight << "\n255\n";
 
@@ -99,7 +86,7 @@ int main()
 			Vec3 rayDirection = cameraCenter + pixelCurrent;
 			Ray ray(cameraCenter, rayDirection);
 
-			image << rayColor(ray) << '\n';
+			image << rayColor(ray, world) << '\n';
 		}
 	}
 

@@ -17,7 +17,7 @@ void HittableList::add(std::shared_ptr<Hittable> object)
 
 std::tuple<bool, HitRecord> HittableList::hit(const Ray& ray, float minT, float maxT) const
 {
-    bool hitAnything;
+    bool hitAnything = false;
     HitRecord result;
     float closest = maxT;
 
