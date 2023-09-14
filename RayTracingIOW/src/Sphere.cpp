@@ -22,7 +22,7 @@ std::tuple<bool, HitRecord> Sphere::hit(const Ray& ray, float minT, float maxT) 
 	float discriminant = halfB * halfB - a * c; // halfB^2 - ac
 
 	if (discriminant < 0)
-		return std::make_tuple<bool, HitRecord>(false, {Point3(), Vec3(), 0});
+		return std::make_tuple<bool, HitRecord>(false, HitRecord());
 
 	float rootedDiscriminant = std::sqrtf(discriminant);
 
@@ -34,11 +34,15 @@ std::tuple<bool, HitRecord> Sphere::hit(const Ray& ray, float minT, float maxT) 
 		root = (-halfB + rootedDiscriminant) / a;
 
 		if (root <= minT || root >= maxT)
-			return std::make_tuple<bool, HitRecord>(false, { Point3(), Vec3(), 0 });
+			return std::make_tuple<bool, HitRecord>(false, HitRecord());
 	}
 
-	Point3 point = ray.at(root);
-	Vec3 normal = (point - m_center) / m_radius;
+	Point3 intersect = ray.at(root);
 
-	return std::make_tuple<bool, HitRecord>(true, { point, normal, root });
+	return std::make_tuple<bool, HitRecord>(true, HitRecord(
+		intersect,
+		root,
+		ray,
+		(intersect - m_center) / m_radius
+	));
 }
