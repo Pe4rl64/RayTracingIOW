@@ -156,7 +156,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Color.cpp" />
-    <ClCompile Include="src\HittableList.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Point3.h" />
     <ClCompile Include="src\Ray.cpp" />
