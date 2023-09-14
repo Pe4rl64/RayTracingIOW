@@ -9,7 +9,7 @@ public:
 
 	Sphere(const Point3& center, float radius);
 
-	/// <inheritdoc />
+	/// <inheritdoc/>
 	std::tuple<bool, HitRecord> hit(const Ray& ray, float minT, float maxT) const override;
 	
 private:

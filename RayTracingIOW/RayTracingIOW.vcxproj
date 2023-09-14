@@ -163,6 +163,7 @@
     <ClCompile Include="src\Vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\HittableList.h" />
     <ClInclude Include="src\Sphere.h" />
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\Hittable.h" />
