@@ -5,17 +5,19 @@
 
 #include "Hittable.h"
 
-class HittableList : public Hittable
-{
-public:
-	HittableList();
+namespace rtx {
+	class HittableList : public Hittable
+	{
+	public:
+		HittableList();
 
-	void clear();
-	void add(std::shared_ptr<Hittable> object);
+		void clear();
+		void add(std::shared_ptr<Hittable> object);
 
-	/// <inheritdoc/>
-	std::tuple<bool, HitRecord> hit(const Ray& ray, float minT, float maxT) const override;
+		/// <inheritdoc/>
+		std::tuple<bool, HitRecord> hit(const Ray& ray, float minT, float maxT) const override;
 
-private:
-	std::vector<std::shared_ptr<Hittable>> m_objects;
-};
+	private:
+		std::vector<std::shared_ptr<Hittable>> m_objects;
+	};
+}

@@ -8,21 +8,19 @@
 #include "Sphere.h"
 #include "Utils.h"
 
-// TODO: Put all project related classes inside a namespace for organization
-
-Color rayColor(const Ray& ray, const Hittable& world)
+static rtx::Color rayColor(const rtx::Ray& ray, const rtx::Hittable& world)
 {
-	auto [hit, record] = world.hit(ray, 0, infinity);
+	auto [hit, record] = world.hit(ray, 0, rtx::infinity);
 
 	if (hit)
 	{
-		return (Color(record.normal.x, record.normal.y, record.normal.z)
-			+ Color(1, 1, 1)) / 2;
+		return (rtx::Color(record.normal.x, record.normal.y, record.normal.z)
+			+ rtx::Color(1, 1, 1)) / 2;
 	}
 
-	Vec3 unitDirection = ray.getDirection().unitVector();
+	rtx::Vec3 unitDirection = ray.getDirection().unitVector();
 	float a = (unitDirection.y + 1) / 2;
-	return (1 - a) * Color(1, 1, 1) + a * Color(0.5f, 0.7f, 1.0f);
+	return (1 - a) * rtx::Color(1, 1, 1) + a * rtx::Color(0.5f, 0.7f, 1.0f);
 }
 
 int main()
@@ -43,31 +41,31 @@ int main()
 	float focalLenght = 1.0f;
 	float viewportHeight = 2.0f;
 	float viewportWidth = viewportHeight * (static_cast<float>(imageWidth) / imageHeight); // Viewport width can be less than 1 since real valued. Uses real aspect ratio
-	Point3 cameraCenter(0, 0, 0);
+	rtx::Point3 cameraCenter(0, 0, 0);
 
 	// Vector across the horizontal edge of the viewport (starting from the top left corner)
-	Vec3 viewportHorizontal(viewportWidth, 0, 0);
+	rtx::Vec3 viewportHorizontal(viewportWidth, 0, 0);
 	// Vector across the vertical edge of the viewport (starting from the top left corner)
-	Vec3 viewportVertical(0, -viewportHeight, 0);
+	rtx::Vec3 viewportVertical(0, -viewportHeight, 0);
 
 	// Horizontal delta vector from pixel to pixel
-	Vec3 pixelDeltaHorizontal = viewportHorizontal / imageWidth;
+	rtx::Vec3 pixelDeltaHorizontal = viewportHorizontal / imageWidth;
 	// Vertical delta vector from pixel to pixel
-	Vec3 pixelDeltaVertical = viewportVertical / imageHeight;
+	rtx::Vec3 pixelDeltaVertical = viewportVertical / imageHeight;
 
 	// Upper left corner of the viewport
-	Point3 viewportUpperLeft = cameraCenter 
-		- Vec3(0, 0, focalLenght)
+	rtx::Point3 viewportUpperLeft = cameraCenter 
+		- rtx::Vec3(0, 0, focalLenght)
 		- ((viewportHorizontal + viewportVertical) / 2);
 	// Upper left pixel 
-	Point3 pixelUpperLeft = viewportUpperLeft
+	rtx::Point3 pixelUpperLeft = viewportUpperLeft
 		+ ((pixelDeltaHorizontal + pixelDeltaVertical) / 2);
 
 	// World
-	HittableList world;
+	rtx::HittableList world;
 
-	world.add(std::make_shared<Sphere>(Point3(0, 0, -1), 0.5f));
-	world.add(std::make_shared<Sphere>(Point3(0, -100.5f, -1), 100));
+	world.add(std::make_shared<rtx::Sphere>(rtx::Point3(0, 0, -1), 0.5f));
+	world.add(std::make_shared<rtx::Sphere>(rtx::Point3(0, -100.5f, -1), 100));
 
 	// Render
 	image << "P3\n" << imageWidth << ' ' << imageHeight << "\n255\n";
@@ -76,15 +74,15 @@ int main()
 	{
 		std::cout << "Scanlines remaining: " << imageHeight - i << "\n";
 
-		Point3 pixelCurrentVertical = i * pixelDeltaVertical;
+		rtx::Point3 pixelCurrentVertical = i * pixelDeltaVertical;
 
 		for (int j = 0; j < imageWidth; j++)
 		{
-			Point3 pixelCurrentHorizontal = j * pixelDeltaHorizontal;
+			rtx::Point3 pixelCurrentHorizontal = j * pixelDeltaHorizontal;
 
-			Point3 pixelCurrent = pixelUpperLeft + pixelCurrentHorizontal + pixelCurrentVertical;
-			Vec3 rayDirection = cameraCenter + pixelCurrent;
-			Ray ray(cameraCenter, rayDirection);
+			rtx::Point3 pixelCurrent = pixelUpperLeft + pixelCurrentHorizontal + pixelCurrentVertical;
+			rtx::Vec3 rayDirection = cameraCenter + pixelCurrent;
+			rtx::Ray ray(cameraCenter, rayDirection);
 
 			image << rayColor(ray, world) << '\n';
 		}
