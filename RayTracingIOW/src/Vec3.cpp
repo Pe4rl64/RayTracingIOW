@@ -1,7 +1,6 @@
 #include "Vec3.h"
 
 #include <cmath>
-#include <iostream>
 
 namespace rtx {
 	Vec3::Vec3()

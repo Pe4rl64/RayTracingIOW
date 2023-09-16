@@ -1,6 +1,9 @@
 #pragma once
 
+#include <tuple>
+
 #include "Hittable.h"
+#include "Point3.h"
 
 namespace rtx {
 	class Sphere : public Hittable
@@ -11,7 +14,7 @@ namespace rtx {
 		Sphere(const Point3& center, float radius);
 
 		/// <inheritdoc/>
-		std::tuple<bool, HitRecord> hit(const Ray& ray, float minT, float maxT) const override;
+		std::tuple<bool, HitRecord> hit(const Ray& ray, const Interval& interval) const override;
 
 	private:
 		Point3 m_center;

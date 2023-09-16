@@ -1,9 +1,12 @@
 #pragma once
 
-#include <memory>
+#include <tuple>
 #include <vector>
+#include <memory>
 
 #include "Hittable.h"
+
+class Interval;
 
 namespace rtx {
 	class HittableList : public Hittable
@@ -15,7 +18,7 @@ namespace rtx {
 		void add(std::shared_ptr<Hittable> object);
 
 		/// <inheritdoc/>
-		std::tuple<bool, HitRecord> hit(const Ray& ray, float minT, float maxT) const override;
+		std::tuple<bool, HitRecord> hit(const Ray& ray, const Interval& interval) const override;
 
 	private:
 		std::vector<std::shared_ptr<Hittable>> m_objects;

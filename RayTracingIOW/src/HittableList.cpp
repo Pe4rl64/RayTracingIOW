@@ -16,15 +16,15 @@ namespace rtx {
         m_objects.push_back(object);
     }
 
-    std::tuple<bool, HitRecord> HittableList::hit(const Ray& ray, float minT, float maxT) const
+    std::tuple<bool, HitRecord> HittableList::hit(const Ray& ray, const Interval& interval) const
     {
         bool hitAnything = false;
         HitRecord result;
-        float closest = maxT;
+        float closest = interval.maximum;
 
         for (const auto& object : m_objects)
         {
-            auto [hit, record] = object->hit(ray, minT, closest);
+            auto [hit, record] = object->hit(ray, Interval(interval.minimum, closest));
 
             if (hit)
             {

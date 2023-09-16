@@ -1,16 +1,16 @@
 #include <iostream>
 #include <fstream>
-#include <cmath>
 
+#include "Ray.h"
 #include "Color.h"
-#include "Hittable.h"
 #include "HittableList.h"
 #include "Sphere.h"
 #include "Utils.h"
 
+
 static rtx::Color rayColor(const rtx::Ray& ray, const rtx::Hittable& world)
 {
-	auto [hit, record] = world.hit(ray, 0, rtx::infinity);
+	auto [hit, record] = world.hit(ray, rtx::Interval(0, rtx::infinity));
 
 	if (hit)
 	{

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Vec3.h"
 #include "Point3.h"
 
 namespace rtx {
