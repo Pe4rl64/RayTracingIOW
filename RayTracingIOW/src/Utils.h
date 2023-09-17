@@ -11,8 +11,15 @@ namespace rtx {
 	constexpr float radiansToDegrees(float radians);
 	
 	/// <summary>
-	/// Returns a random float in the range [0, 1).
+	/// Returns a random float in range [minimum, maximum).
 	/// </summary>
-	/// <returns>The random float in the range [0, 1).</returns>
-	float randomFloat();
+	/// <param name="minimum">The minimum value for the float (included).</param>
+	/// <param name="maximum">The maximum value for the float (excluded).</param>
+	/// <returns>A random float in range [minimum, maximum).</returns>
+	inline float randomFloat(float minimum, float maximum)
+	{
+		static std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
+		static std::mt19937 generator;
+		return distribution(generator);
+	}
 }
