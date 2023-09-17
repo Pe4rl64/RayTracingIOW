@@ -7,13 +7,63 @@ namespace rtx {
 		:
 		m_imageWidth(imageWidth),
 		m_imageHeight(static_cast<int>(imageWidth / aspectRatio)),
-		m_samplesPerPixel(samplesPerPixel),
-		m_aspectRatio(aspectRatio),
-		m_cameraCenter(0, 0, 0)
+		m_aspectRatio(m_imageWidth / m_imageHeight),
+		m_samplesPerPixel(samplesPerPixel)
+	{
+		initialize();
+	}
+
+	Camera::Camera(int imageWidth, int imageHeight, int samplesPerPixel)
+		:
+		m_imageWidth(imageWidth),
+		m_imageHeight(imageHeight),
+		m_aspectRatio(m_imageWidth / m_imageHeight),
+		m_samplesPerPixel(samplesPerPixel)
+	{
+		initialize();
+	}
+
+	void Camera::render(std::ostream& stream, const Hittable& world)
+	{
+		stream << "P3\n" << m_imageWidth << ' ' << m_imageHeight << "\n255\n";
+
+		for (int i = 0; i < m_imageHeight; ++i)
+		{
+			std::cout << "Scanlines remaining: " << m_imageHeight - i << "\n";
+
+			Point3 pixelCurrentVertical = i * m_pixelDeltaVertical;
+
+			for (int j = 0; j < m_imageWidth; ++j)
+			{
+				Point3 pixelCurrentHorizontal = j * m_pixelDeltaHorizontal;
+
+				Point3 pixelCurrentCenter = m_pixelUpperLeft + pixelCurrentHorizontal + pixelCurrentVertical;
+
+				// First sample always center
+				Vec3 pixelCenterRayDirection = m_cameraCenter + pixelCurrentCenter;
+				Color pixelCurrentColor(rayColor(Ray(m_cameraCenter, pixelCenterRayDirection), world));
+
+				// Taking samples for antialiasing
+				for (int sample = 1; sample < m_samplesPerPixel; ++sample)
+				{
+					Ray ray = getRay(pixelCurrentCenter);
+					pixelCurrentColor += rayColor(ray, world);
+				}
+
+				pixelCurrentColor.writeColor(stream, m_samplesPerPixel);
+				stream << '\n';
+			}
+		}
+
+		std::cout << "Finished rendering.";
+	}
+
+	void Camera::initialize()
 	{
 		if (m_imageHeight < 1)
 			m_imageHeight = 1;
 
+		m_cameraCenter = Point3(0, 0, 0);
 		float focalLenght = 1.0f;
 		float viewportHeight = 2.0f;
 		float viewportWidth = viewportHeight * (static_cast<float>(m_imageWidth) / m_imageHeight); // Viewport width can be less than 1 since real valued. Uses real aspect ratio
@@ -37,43 +87,9 @@ namespace rtx {
 			+ ((m_pixelDeltaHorizontal + m_pixelDeltaVertical) / 2);
 	}
 
-	void Camera::render(std::ostream& stream, const Hittable& world)
-	{
-		stream << "P3\n" << m_imageWidth << ' ' << m_imageHeight << "\n255\n";
-
-		for (int i = 0; i < m_imageHeight; ++i)
-		{
-			std::cout << "Scanlines remaining: " << m_imageHeight - i << "\n";
-
-			Point3 pixelCurrentVertical = i * m_pixelDeltaVertical;
-
-			for (int j = 0; j < m_imageWidth; ++j)
-			{
-				Point3 pixelCurrentHorizontal = j * m_pixelDeltaHorizontal;
-
-				Point3 pixelCurrentCenter = m_pixelUpperLeft + pixelCurrentHorizontal + pixelCurrentVertical;
-
-				Color pixelCurrentColor(0, 0, 0);
-
-				// Taking samples for antialiasing
-				for (int sample = 0; sample < m_samplesPerPixel; ++sample)
-				{
-					Ray ray = getRay(pixelCurrentCenter);
-					pixelCurrentColor += rayColor(ray, world);
-				}
-
-				pixelCurrentColor.writeColor(stream, m_samplesPerPixel);
-				stream << '\n';
-			}
-		}
-
-		std::cout << "Finished rendering.";
-	}
-
 	Ray Camera::getRay(const Point3& pixelCenter) const
 	{
 		Point3 pixelSample = pixelCenter + pixelSampleSquare();
-
 		Vec3 rayDirection = m_cameraCenter + pixelSample;
 
 		return Ray(m_cameraCenter, rayDirection);
@@ -82,8 +98,8 @@ namespace rtx {
 	Vec3 Camera::pixelSampleSquare() const
 	{
 		// Between -0.5 and +0.5
-		float px = -0.5f + randomFloat(); 
-		float py = -0.5f + randomFloat();
+		float px = -0.5f + randomFloat(0, 1); 
+		float py = -0.5f + randomFloat(0, 1);
 
 		return (px * m_pixelDeltaHorizontal) + (py * m_pixelDeltaVertical);
 	}
