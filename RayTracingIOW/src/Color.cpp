@@ -1,5 +1,7 @@
 #include "Color.h"
 
+#include "Interval.h"
+
 namespace rtx {
 	Color::Color()
 		: r(0.0f), g(0.0f), b(0.0f)
@@ -9,6 +11,26 @@ namespace rtx {
 	Color::Color(float r, float g, float b)
 		: r(r), g(g), b(b)
 	{
+	}
+
+	void Color::writeColor(std::ostream& stream) const
+	{
+		stream << static_cast<int>(r * 255)
+			<< ' ' << static_cast<int>(g * 255)
+			<< ' ' << static_cast<int>(b * 255);
+	}
+
+	void Color::writeColor(std::ostream& stream, int samplesPerPixel) const
+	{
+		float scaledR = r / samplesPerPixel;
+		float scaledG = g / samplesPerPixel;
+		float scaledB = b / samplesPerPixel;
+
+		Interval intensity(0, 1);
+
+		stream << static_cast<int>(intensity.clamp(scaledR) * 255)
+			<< ' ' << static_cast<int>(intensity.clamp(scaledG) * 255)
+			<< ' ' << static_cast<int>(intensity.clamp(scaledB) * 255);
 	}
 
 	Color Color::operator+(const Color& other) const
@@ -95,9 +117,7 @@ namespace rtx {
 
 	std::ostream& operator<<(std::ostream& stream, const Color& color)
 	{
-		stream << static_cast<int>(color.r * 255)
-			<< ' ' << static_cast<int>(color.g * 255)
-			<< ' ' << static_cast<int>(color.b * 255);
+		color.writeColor(stream);
 		return stream;
 	}
 }
