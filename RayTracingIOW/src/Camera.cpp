@@ -3,10 +3,11 @@
 #include "Utils.h"
 
 namespace rtx {
-	Camera::Camera(float aspectRatio, int imageWidth)
+	Camera::Camera(float aspectRatio, int imageWidth, int samplesPerPixel)
 		:
 		m_imageWidth(imageWidth),
 		m_imageHeight(static_cast<int>(imageWidth / aspectRatio)),
+		m_samplesPerPixel(samplesPerPixel),
 		m_aspectRatio(aspectRatio),
 		m_cameraCenter(0, 0, 0)
 	{
@@ -40,28 +41,54 @@ namespace rtx {
 	{
 		stream << "P3\n" << m_imageWidth << ' ' << m_imageHeight << "\n255\n";
 
-		for (int i = 0; i < m_imageHeight; i++)
+		for (int i = 0; i < m_imageHeight; ++i)
 		{
 			std::cout << "Scanlines remaining: " << m_imageHeight - i << "\n";
 
 			Point3 pixelCurrentVertical = i * m_pixelDeltaVertical;
 
-			for (int j = 0; j < m_imageWidth; j++)
+			for (int j = 0; j < m_imageWidth; ++j)
 			{
 				Point3 pixelCurrentHorizontal = j * m_pixelDeltaHorizontal;
 
-				Point3 pixelCurrent = m_pixelUpperLeft + pixelCurrentHorizontal + pixelCurrentVertical;
-				Vec3 rayDirection = m_cameraCenter + pixelCurrent;
-				Ray ray(m_cameraCenter, rayDirection);
+				Point3 pixelCurrentCenter = m_pixelUpperLeft + pixelCurrentHorizontal + pixelCurrentVertical;
 
-				stream << rayColor(ray, world) << '\n';
+				Color pixelCurrentColor(0, 0, 0);
+
+				// Taking samples for antialiasing
+				for (int sample = 0; sample < m_samplesPerPixel; ++sample)
+				{
+					Ray ray = getRay(pixelCurrentCenter);
+					pixelCurrentColor += rayColor(ray, world);
+				}
+
+				pixelCurrentColor.writeColor(stream, m_samplesPerPixel);
+				stream << '\n';
 			}
 		}
 
 		std::cout << "Finished rendering.";
 	}
 
-	Color Camera::rayColor(const Ray& ray, const Hittable& world)
+	Ray Camera::getRay(const Point3& pixelCenter) const
+	{
+		Point3 pixelSample = pixelCenter + pixelSampleSquare();
+
+		Vec3 rayDirection = m_cameraCenter + pixelSample;
+
+		return Ray(m_cameraCenter, rayDirection);
+	}
+
+	Vec3 Camera::pixelSampleSquare() const
+	{
+		// Between -0.5 and +0.5
+		float px = -0.5f + randomFloat(); 
+		float py = -0.5f + randomFloat();
+
+		return (px * m_pixelDeltaHorizontal) + (py * m_pixelDeltaVertical);
+	}
+
+	Color Camera::rayColor(const Ray& ray, const Hittable& world) const
 	{
 		auto [hit, record] = world.hit(ray, rtx::Interval(0, rtx::infinity));
 
