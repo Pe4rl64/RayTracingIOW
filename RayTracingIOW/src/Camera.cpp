@@ -60,13 +60,10 @@ namespace rtx {
 
 	void Camera::initialize()
 	{
-		if (m_imageHeight < 1)
-			m_imageHeight = 1;
-
 		m_cameraCenter = Point3(0, 0, 0);
 		float focalLenght = 1.0f;
 		float viewportHeight = 2.0f;
-		float viewportWidth = viewportHeight * (static_cast<float>(m_imageWidth) / m_imageHeight); // Viewport width can be less than 1 since real valued. Uses real aspect ratio
+		float viewportWidth = viewportHeight * m_aspectRatio; // Viewport width can be less than 1 since real valued. Uses real aspect ratio
 
 		// Vector across the horizontal edge of the viewport (starting from the top left corner)
 		Vec3 viewportHorizontal(viewportWidth, 0, 0);
