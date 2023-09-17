@@ -34,6 +34,13 @@ namespace rtx {
 		/// </returns>
 		bool surrounds(float number) const;
 
+		/// <summary>
+		/// Clamps the given number to the range of this interval.
+		/// </summary>
+		/// <param name="number">The number to clamp.</param>
+		/// <returns>The clamped number.</returns>
+		float clamp(float number) const;
+
 		float minimum, maximum;
 		static const Interval empty, universe;
 	};

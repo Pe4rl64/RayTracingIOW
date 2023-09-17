@@ -23,6 +23,17 @@ namespace rtx {
 		return number > minimum && number < maximum;
 	}
 
+	float Interval::clamp(float number) const
+	{
+		if (number < minimum)
+			return minimum;
+
+		if (number > maximum)
+			return maximum;
+		
+		return number;
+	}
+
 	const Interval Interval::empty(infinity, -infinity);
 	const Interval Interval::universe(-infinity, infinity);
 }
