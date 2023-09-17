@@ -7,7 +7,7 @@ namespace rtx {
 		:
 		m_imageWidth(imageWidth),
 		m_imageHeight(static_cast<int>(imageWidth / aspectRatio)),
-		m_aspectRatio(m_imageWidth / m_imageHeight),
+		m_aspectRatio(((float)m_imageWidth) / m_imageHeight),
 		m_samplesPerPixel(samplesPerPixel)
 	{
 		initialize();
@@ -17,7 +17,7 @@ namespace rtx {
 		:
 		m_imageWidth(imageWidth),
 		m_imageHeight(imageHeight),
-		m_aspectRatio(m_imageWidth / m_imageHeight),
+		m_aspectRatio(((float)m_imageWidth) / m_imageHeight),
 		m_samplesPerPixel(samplesPerPixel)
 	{
 		initialize();
