@@ -10,6 +10,10 @@ namespace rtx {
 
 		Vec3(float x, float y, float z);
 
+		static Vec3 random();
+		static Vec3 random(float minimum, float maximum);
+		static Vec3 randomInUnitSphere();
+
 		Vec3 operator+(const Vec3& other) const;
 		Vec3 operator-() const;
 		Vec3 operator-(const Vec3& other) const;

@@ -1,6 +1,10 @@
 #include "Vec3.h"
 
 #include <cmath>
+#include <thread>
+#include <chrono>
+
+#include "Utils.h"
 
 namespace rtx {
 	Vec3::Vec3()
@@ -11,6 +15,32 @@ namespace rtx {
 	Vec3::Vec3(float x, float y, float z)
 		: x(x), y(y), z(z)
 	{
+	}
+
+	Vec3 Vec3::random()
+	{
+		return Vec3(rtx::randomFloat(), rtx::randomFloat(), rtx::randomFloat());
+	}
+
+	Vec3 Vec3::random(float minimum, float maximum)
+	{
+		return Vec3(rtx::randomFloat(minimum, maximum),
+			rtx::randomFloat(minimum, maximum),
+			rtx::randomFloat(minimum, maximum));
+	}
+
+	Vec3 Vec3::randomInUnitSphere()
+	{
+		while (true)
+		{
+			Vec3 vector = Vec3::random(-1, 1);
+			
+			if (vector.lengthSquared() < 1)
+				return vector;
+			
+			using namespace std::chrono_literals;
+			std::this_thread::sleep_for(1ms); // To not overstress CPU
+		}
 	}
 
 	Vec3 Vec3::operator+(const Vec3& other) const
