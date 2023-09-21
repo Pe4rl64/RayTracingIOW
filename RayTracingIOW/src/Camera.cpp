@@ -107,8 +107,8 @@ namespace rtx {
 
 		if (hit)
 		{
-			return (rtx::Color(record.normal.x, record.normal.y, record.normal.z)
-				+ rtx::Color(1, 1, 1)) / 2;
+			Vec3 direction = Vec3::randomOnHemisphere(record.normal);
+			return rayColor(Ray(record.point, direction), world) / 2;
 		}
 
 		rtx::Vec3 unitDirection = ray.getDirection().unitVector();

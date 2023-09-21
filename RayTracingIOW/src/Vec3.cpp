@@ -35,12 +35,30 @@ namespace rtx {
 		{
 			Vec3 vector = Vec3::random(-1, 1);
 			
-			if (vector.lengthSquared() < 1)
+			if (vector.lengthSquared() <= 1)
 				return vector;
 			
+			// TODO: figure out why it doesn't work
+
 			using namespace std::chrono_literals;
-			std::this_thread::sleep_for(1ms); // To not overstress CPU
+			//std::this_thread::sleep_for(1ns); // To not overstress CPU
 		}
+	}
+
+	Vec3 Vec3::randomUnit()
+	{
+		// TODO: Why do I need to normalize?
+		return randomInUnitSphere().unitVector();
+	}
+
+	Vec3 Vec3::randomOnHemisphere(const Vec3& normal)
+	{
+		Vec3 random = randomUnit();
+
+		if (dot(random, normal) < 0)
+			return -random;
+
+		return random;
 	}
 
 	Vec3 Vec3::operator+(const Vec3& other) const
