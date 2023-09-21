@@ -9,6 +9,17 @@ namespace rtx {
 
 	constexpr float degreesToRadians(float degrees);
 	constexpr float radiansToDegrees(float radians);
+
+	/// <summary>
+	/// Returns a random float.
+	/// </summary>
+	/// <returns>A random float.</returns>
+	inline float randomFloat()
+	{
+		static std::uniform_real_distribution<float> distribution;
+		static std::mt19937 generator;
+		return distribution(generator);
+	}
 	
 	/// <summary>
 	/// Returns a random float in range [minimum, maximum).
