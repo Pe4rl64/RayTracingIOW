@@ -1,5 +1,7 @@
 #include "Color.h"
 
+#include <cmath>
+
 #include "Interval.h"
 
 namespace rtx {
@@ -13,11 +15,16 @@ namespace rtx {
 	{
 	}
 
+	float Color::linearToGamma(float linearComponent)
+	{
+		return std::sqrt(linearComponent);
+	}
+
 	void Color::writeColor(std::ostream& stream) const
 	{
-		stream << static_cast<int>(r * 255)
-			<< ' ' << static_cast<int>(g * 255)
-			<< ' ' << static_cast<int>(b * 255);
+		stream << static_cast<int>(linearToGamma(r) * 255)
+			<< ' ' << static_cast<int>(linearToGamma(g) * 255)
+			<< ' ' << static_cast<int>(linearToGamma(b) * 255);
 	}
 
 	void Color::writeColor(std::ostream& stream, int samplesPerPixel) const
@@ -25,6 +32,10 @@ namespace rtx {
 		float scaledR = r / samplesPerPixel;
 		float scaledG = g / samplesPerPixel;
 		float scaledB = b / samplesPerPixel;
+
+		scaledR = linearToGamma(scaledR);
+		scaledG = linearToGamma(scaledG);
+		scaledB = linearToGamma(scaledB);
 
 		Interval intensity(0, 1);
 

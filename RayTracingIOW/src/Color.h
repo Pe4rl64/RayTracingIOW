@@ -10,15 +10,19 @@ namespace rtx {
 
 		Color(float r, float g, float b);
 
+		static float linearToGamma(float linearComponent);
+
 		/// <summary>
-		/// Pushes the translated color values to the output stream [0, 255].
+		/// Pushes the translated color values to the output stream [0, 255],
+		/// and transforms the components into gamma space.
 		/// </summary>
 		/// <param name="stream">The output stream.</param>
 		void writeColor(std::ostream& stream) const;
 
 		/// <summary>
 		/// Pushes the translated color values to the output stream [0, 255],
-		/// taking into account the number of samples from neighboring regions.
+		/// taking into account the number of samples from neighboring regions,
+		/// and transforming the components to gamma space.
 		/// </summary>
 		/// <param name="stream">The output stream.</param>
 		/// <param name="samplesPerPixel">The number of samples taken from neighboring regions.</param>
