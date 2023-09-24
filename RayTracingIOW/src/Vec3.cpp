@@ -41,13 +41,13 @@ namespace rtx {
 			// TODO: figure out why it doesn't work
 
 			using namespace std::chrono_literals;
-			//std::this_thread::sleep_for(1ns); // To not overstress CPU
+			//std::this_thread::sleep_for(1s); // To not overstress CPU
 		}
 	}
 
 	Vec3 Vec3::randomOnHemisphere(const Vec3& normal)
 	{
-		Vec3 random = randomOnHemisphere();
+		Vec3 random = randomInUnitSphere();
 
 		if (dot(random, normal) < 0)
 			return -random;
