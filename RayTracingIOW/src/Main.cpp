@@ -20,7 +20,7 @@ int main()
 	world.add(std::make_shared<rtx::Sphere>(rtx::Point3(0, -100.5f, -1), 100));
 
 	// Camera
-	rtx::Camera camera(16.0f / 9.0f, 1024, 100);
+	rtx::Camera camera(16.0f / 9.0f, 1024, 100, 50);
 
 	// Rendering
 	camera.render(image, world);

@@ -3,22 +3,24 @@
 #include "Utils.h"
 
 namespace rtx {
-	Camera::Camera(float aspectRatio, int imageWidth, int samplesPerPixel)
+	Camera::Camera(float aspectRatio, int imageWidth, int samplesPerPixel, int maxBounces)
 		:
 		m_imageWidth(imageWidth),
 		m_imageHeight(static_cast<int>(imageWidth / aspectRatio)),
 		m_aspectRatio(((float)m_imageWidth) / m_imageHeight),
-		m_samplesPerPixel(samplesPerPixel)
+		m_samplesPerPixel(samplesPerPixel),
+		m_maxBounces(maxBounces)
 	{
 		initialize();
 	}
 
-	Camera::Camera(int imageWidth, int imageHeight, int samplesPerPixel)
+	Camera::Camera(int imageWidth, int imageHeight, int samplesPerPixel, int maxBounces)
 		:
 		m_imageWidth(imageWidth),
 		m_imageHeight(imageHeight),
 		m_aspectRatio(((float)m_imageWidth) / m_imageHeight),
-		m_samplesPerPixel(samplesPerPixel)
+		m_samplesPerPixel(samplesPerPixel),
+		m_maxBounces(maxBounces)
 	{
 		initialize();
 	}
@@ -41,13 +43,13 @@ namespace rtx {
 
 				// First sample always center
 				Vec3 pixelCenterRayDirection = m_cameraCenter + pixelCurrentCenter;
-				Color pixelCurrentColor(rayColor(Ray(m_cameraCenter, pixelCenterRayDirection), world));
+				Color pixelCurrentColor(rayColor(Ray(m_cameraCenter, pixelCenterRayDirection), m_maxBounces, world));
 
 				// Taking samples for antialiasing
 				for (int sample = 1; sample < m_samplesPerPixel; ++sample)
 				{
 					Ray ray = getRay(pixelCurrentCenter);
-					pixelCurrentColor += rayColor(ray, world);
+					pixelCurrentColor += rayColor(ray, m_maxBounces, world);
 				}
 
 				pixelCurrentColor.writeColor(stream, m_samplesPerPixel);
@@ -101,14 +103,20 @@ namespace rtx {
 		return (px * m_pixelDeltaHorizontal) + (py * m_pixelDeltaVertical);
 	}
 
-	Color Camera::rayColor(const Ray& ray, const Hittable& world) const
+	Color Camera::rayColor(const Ray& ray, int bounce, const Hittable& world) const
 	{
 		auto [hit, record] = world.hit(ray, rtx::Interval(0, rtx::infinity));
+
+		if (bounce <= 0)
+		{
+			return Color(0, 0, 0);
+		}
 
 		if (hit)
 		{
 			Vec3 direction = Vec3::randomOnHemisphere(record.normal);
-			return rayColor(Ray(record.point, direction), world) / 2;
+			// Accounting for hit points inside spheres because of floating point precision errors
+			return rayColor(Ray(record.point + record.normal * 0.0001f, direction), bounce - 1, world) / 2;
 		}
 
 		rtx::Vec3 unitDirection = ray.getDirection().unitVector();

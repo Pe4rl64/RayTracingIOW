@@ -10,9 +10,9 @@ namespace rtx {
 	class Camera
 	{
 	public:
-		Camera(float aspectRatio, int imageWidth, int samplesPerPixel);
+		Camera(float aspectRatio, int imageWidth, int samplesPerPixel, int maxBounces);
 
-		Camera(int imageWidth, int imageHeight, int samplesPerPixel);
+		Camera(int imageWidth, int imageHeight, int samplesPerPixel, int maxBounces);
 
 		void render(std::ostream& stream, const Hittable& world);
 
@@ -23,12 +23,13 @@ namespace rtx {
 
 		Vec3 pixelSampleSquare() const;
 
-		Color rayColor(const Ray& ray, const Hittable& world) const;
+		Color rayColor(const Ray& ray, int bounce, const Hittable& world) const;
 		
 	private:
 		int m_imageWidth, m_imageHeight;
 		float m_aspectRatio;
 		int m_samplesPerPixel;
+		int m_maxBounces;
 
 		Point3 m_cameraCenter;
 		Vec3 m_pixelDeltaHorizontal, m_pixelDeltaVertical;
