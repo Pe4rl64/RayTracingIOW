@@ -114,9 +114,9 @@ namespace rtx {
 
 		if (hit)
 		{
-			Vec3 direction = Vec3::randomOnHemisphere(record.normal);
+			Vec3 direction = record.normal + Vec3::randomUnit();
 			// Accounting for hit points inside spheres because of floating point precision errors
-			return rayColor(Ray(record.point + record.normal * 0.0001f, direction), bounce - 1, world) / 2;
+			return 0.5f * rayColor(Ray(record.point + record.normal * 0.0001f, direction), bounce - 1, world);
 		}
 
 		rtx::Vec3 unitDirection = ray.getDirection().unitVector();

@@ -45,6 +45,11 @@ namespace rtx {
 		}
 	}
 
+	Vec3 Vec3::randomUnit()
+	{
+		return random().unitVector();
+	}
+
 	Vec3 Vec3::randomOnHemisphere(const Vec3& normal)
 	{
 		Vec3 random = randomInUnitSphere();
