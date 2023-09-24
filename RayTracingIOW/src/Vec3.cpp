@@ -45,15 +45,9 @@ namespace rtx {
 		}
 	}
 
-	Vec3 Vec3::randomUnit()
-	{
-		// TODO: Why do I need to normalize?
-		return randomInUnitSphere().unitVector();
-	}
-
 	Vec3 Vec3::randomOnHemisphere(const Vec3& normal)
 	{
-		Vec3 random = randomUnit();
+		Vec3 random = randomOnHemisphere();
 
 		if (dot(random, normal) < 0)
 			return -random;
