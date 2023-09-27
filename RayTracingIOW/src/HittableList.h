@@ -18,7 +18,7 @@ namespace rtx {
 		void add(std::shared_ptr<Hittable> object);
 
 		/// <inheritdoc/>
-		std::tuple<bool, HitRecord> hit(const Ray& ray, const Interval& interval) const override;
+		HitRecord hit(const Ray& ray, const Interval& interval) const override;
 
 	private:
 		std::vector<std::shared_ptr<Hittable>> m_objects;

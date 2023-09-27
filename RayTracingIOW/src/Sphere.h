@@ -14,7 +14,7 @@ namespace rtx {
 		Sphere(const Point3& center, float radius);
 
 		/// <inheritdoc/>
-		std::tuple<bool, HitRecord> hit(const Ray& ray, const Interval& interval) const override;
+		HitRecord hit(const Ray& ray, const Interval& interval) const override;
 
 	private:
 		Point3 m_center;
