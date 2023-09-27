@@ -35,7 +35,7 @@ rtx::Hittable::HitRecord rtx::Sphere::hit(const Ray& ray, const Interval& interv
 		root = (-halfB + rootedDiscriminant) / a;
 
 		if (!interval.surrounds(root))
-			result;
+			return result;
 	}
 
 	result.t = root;
