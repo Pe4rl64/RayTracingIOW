@@ -32,11 +32,9 @@ namespace rtx {
 		/// If a intersection occurs returns true and a HitRecord with the intersection info of the closest one.
 		/// </summary>
 		/// <param name="ray">The ray to check against.</param>
-		/// <param name="minT">The minimum value of <b>t</b> under which intersections don't count.</param>
-		/// <param name="maxT">The maximum value of <b>t</b> over which intersections don't count.</param>
+		/// <param name="interval">The interval in which to search for intersections.</param>
 		/// <returns>
-		/// A tuple countaining: a boolean, <b>true</b> if there was a intersection along the path,
-		/// <b>false</b> otherwise; and a HitRecord, which contains the intersection info if there was one.
+		/// A HitRecord, which contains the intersection info. If there was no intersection t = -1.
 		/// </returns>
 		virtual HitRecord hit(const Ray& ray, const Interval& interval) const = 0;
 

@@ -32,11 +32,11 @@ void rtx::Camera::render(std::ostream& stream, const Hittable& world)
 	{
 		std::cout << "Scanlines remaining: " << m_imageHeight - i << "\n";
 
-		Point3 pixelCurrentVertical = i * m_pixelDeltaVertical;
+		Point3 pixelCurrentVertical = ((float)i) * m_pixelDeltaVertical;
 
 		for (int j = 0; j < m_imageWidth; ++j)
 		{
-			Point3 pixelCurrentHorizontal = j * m_pixelDeltaHorizontal;
+			Point3 pixelCurrentHorizontal = ((float)j) * m_pixelDeltaHorizontal;
 
 			Point3 pixelCurrentCenter = m_pixelUpperLeft + pixelCurrentHorizontal + pixelCurrentVertical;
 
@@ -72,9 +72,9 @@ void rtx::Camera::initialize()
 	Vec3 viewportVertical(0, -viewportHeight, 0);
 
 	// Horizontal delta vector from pixel to pixel
-	m_pixelDeltaHorizontal = viewportHorizontal / m_imageWidth;
+	m_pixelDeltaHorizontal = viewportHorizontal / ((float)m_imageWidth);
 	// Vertical delta vector from pixel to pixel
-	m_pixelDeltaVertical = viewportVertical / m_imageHeight;
+	m_pixelDeltaVertical = viewportVertical / ((float)m_imageHeight);
 
 	// Upper left corner of the viewport
 	Point3 viewportUpperLeft = m_cameraCenter
