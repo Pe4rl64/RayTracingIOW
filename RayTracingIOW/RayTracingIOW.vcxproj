@@ -160,7 +160,9 @@
     <ClCompile Include="src\Hittable.cpp" />
     <ClCompile Include="src\HittableList.cpp" />
     <ClCompile Include="src\Interval.cpp" />
+    <ClCompile Include="src\Lambertian.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Metal.cpp" />
     <ClCompile Include="src\Point3.h" />
     <ClCompile Include="src\Ray.cpp" />
     <ClCompile Include="src\Sphere.cpp" />
@@ -171,6 +173,9 @@
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Interval.h" />
     <ClInclude Include="src\HittableList.h" />
+    <ClInclude Include="src\Lambertian.h" />
+    <ClInclude Include="src\Material.h" />
+    <ClInclude Include="src\Metal.h" />
     <ClInclude Include="src\Sphere.h" />
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\Hittable.h" />

@@ -1,6 +1,7 @@
 #include "Camera.h"
 
 #include "Utils.h"
+#include "Material.h"
 
 rtx::Camera::Camera(float aspectRatio, int imageWidth, int samplesPerPixel, int maxBounces)
 	:
@@ -104,8 +105,10 @@ rtx::Vec3 rtx::Camera::pixelSampleSquare() const
 
 rtx::Color rtx::Camera::rayColor(const Ray& ray, int bounce, const Hittable& world) const
 {
-	rtx::Hittable::HitRecord record = world.hit(ray, rtx::Interval(0, rtx::infinity));
+	// Accounting for hit points inside spheres because of floating point precision errors
+	rtx::Hittable::HitRecord record = world.hit(ray, rtx::Interval(0.0001f, rtx::infinity));
 
+	// If ray bounce limit is met, no light.
 	if (bounce <= 0)
 	{
 		return Color(0, 0, 0);
@@ -113,9 +116,14 @@ rtx::Color rtx::Camera::rayColor(const Ray& ray, int bounce, const Hittable& wor
 
 	if (record.t >= 0)
 	{
-		Vec3 direction = record.normal + Vec3::randomUnit();
-		// Accounting for hit points inside spheres because of floating point precision errors
-		return 0.5f * rayColor(Ray(record.point + record.normal * 0.0001f, direction), bounce - 1, world);
+		Material::ScatterResult result = record.material->scatter(ray, record);
+
+		if (!result.absorbed)
+		{
+			return result.attenuation * rayColor(result.scattered, bounce - 1, world);
+		}
+
+		return Color(0, 0, 0);
 	}
 
 	rtx::Vec3 unitDirection = ray.getDirection().unitVector();
