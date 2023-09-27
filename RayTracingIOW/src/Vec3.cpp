@@ -28,35 +28,9 @@ rtx::Vec3 rtx::Vec3::random(float minimum, float maximum)
 		rtx::randomFloat(minimum, maximum));
 }
 
-rtx::Vec3 rtx::Vec3::randomInUnitSphere()
-{
-	while (true)
-	{
-		Vec3 vector = Vec3::random(-1, 1);
-			
-		if (vector.lengthSquared() <= 1)
-			return vector;
-			
-		// TODO: figure out why it doesn't work
-
-		using namespace std::chrono_literals;
-		//std::this_thread::sleep_for(1s); // To not overstress CPU
-	}
-}
-
 rtx::Vec3 rtx::Vec3::randomUnit()
 {
 	return random().unitVector();
-}
-
-rtx::Vec3 rtx::Vec3::randomOnHemisphere(const Vec3& normal)
-{
-	Vec3 random = randomInUnitSphere();
-
-	if (dot(random, normal) < 0)
-		return -random;
-
-	return random;
 }
 
 rtx::Vec3 rtx::Vec3::operator+(const Vec3& other) const

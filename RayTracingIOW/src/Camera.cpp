@@ -105,6 +105,7 @@ rtx::Vec3 rtx::Camera::pixelSampleSquare() const
 
 rtx::Color rtx::Camera::rayColor(const Ray& ray, int bounce, const Hittable& world) const
 {
+	// TODO: Look if adding a small amount is faster
 	// Accounting for hit points inside spheres because of floating point precision errors
 	rtx::Hittable::HitRecord record = world.hit(ray, rtx::Interval(0.0001f, rtx::infinity));
 
