@@ -171,6 +171,7 @@
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Interval.h" />
     <ClInclude Include="src\HittableList.h" />
+    <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\Sphere.h" />
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\Hittable.h" />

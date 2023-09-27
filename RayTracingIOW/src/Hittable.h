@@ -5,6 +5,8 @@
 #include "Interval.h"
 
 namespace rtx {
+	class Material;
+
 	class Hittable
 	{
 	public:
@@ -13,8 +15,9 @@ namespace rtx {
 		/// </summary>
 		struct HitRecord
 		{
-			Point3 point; // The point of intersection
-			Vec3 normal; // The normal of the surface
+			Point3 point; // The point of intersection.
+			Vec3 normal; // The normal of the surface.
+			std::shared_ptr<Material> material; // The material of the intersected object.
 			float t; // The t (time point) at which the ray intersects the object, -1 if no intersection occurred.
 			bool frontFace; // true if the intersection occurred with the front face, false otherwise.
 

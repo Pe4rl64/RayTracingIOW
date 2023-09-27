@@ -1,12 +1,7 @@
 #include "Sphere.h"
 
-rtx::Sphere::Sphere()
-	: m_center(), m_radius(0.0f)
-{
-}
-
-rtx::Sphere::Sphere(const Point3& center, float radius)
-	: m_center(center), m_radius(radius)
+rtx::Sphere::Sphere(const Point3& center, float radius, std::shared_ptr<Material> material)
+	: m_center(center), m_radius(radius), m_material(material)
 {
 }
 
@@ -40,6 +35,7 @@ rtx::Hittable::HitRecord rtx::Sphere::hit(const Ray& ray, const Interval& interv
 
 	result.t = root;
 	result.point = ray.at(result.t);
+	result.material = m_material;
 	result.setFaceNormal(ray, (result.point - m_center) / m_radius);
 
 	return result;
