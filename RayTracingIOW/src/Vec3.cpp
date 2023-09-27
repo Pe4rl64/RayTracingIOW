@@ -173,6 +173,12 @@ void rtx::Vec3::normalize()
 	(*this) /= length();
 }
 
+bool rtx::Vec3::nearZero()
+{
+	float zero = 1e-8f; // absolute value for which zero is assumed
+	return (std::abs(x) < zero && std::abs(y) < zero && std::abs(z) < zero);
+}
+
 float rtx::Vec3::dot(const Vec3& x, const Vec3& y)
 {
 	return x.dot(y);

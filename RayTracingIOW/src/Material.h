@@ -2,21 +2,17 @@
 
 #include "Color.h"
 #include "Ray.h"
+#include "Hittable.h"
 
 namespace rtx {
-	class Hittable
-	{
-	public:
-		struct HitRecord;
-	};
-
 	class Material
 	{
 	public:
 		struct ScatterResult
 		{
-			Ray scattered;
-			Color attenuation;
+			bool absorbed; // True if the input ray was completely absorbed.
+			Ray scattered; // Output scattered ray.
+			Color attenuation; // Attenuation of the output scattered ray.
 		};
 
 		virtual ScatterResult scatter(const Ray& input, const Hittable::HitRecord& record) const = 0;
