@@ -15,5 +15,5 @@ rtx::Material::ScatterResult rtx::Lambertian::scatter(const Ray& input, const Hi
 	if (scatterDirection.nearZero())
 		scatterDirection = record.normal;
 
-	return { true, { record.point, scatterDirection }, m_albedo };
+	return { false, { record.point, scatterDirection }, m_albedo };
 }

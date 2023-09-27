@@ -108,7 +108,7 @@ rtx::Color rtx::Camera::rayColor(const Ray& ray, int bounce, const Hittable& wor
 	// Accounting for hit points inside spheres because of floating point precision errors
 	rtx::Hittable::HitRecord record = world.hit(ray, rtx::Interval(0.0001f, rtx::infinity));
 
-	// If ray bounce limit is met, no lignt.
+	// If ray bounce limit is met, no light.
 	if (bounce <= 0)
 	{
 		return Color(0, 0, 0);
@@ -120,8 +120,10 @@ rtx::Color rtx::Camera::rayColor(const Ray& ray, int bounce, const Hittable& wor
 
 		if (!result.absorbed)
 		{
-			result.attenuation * rayColor(result.scattered, bounce - 1, world);
+			return result.attenuation * rayColor(result.scattered, bounce - 1, world);
 		}
+
+		return Color(0, 0, 0);
 	}
 
 	rtx::Vec3 unitDirection = ray.getDirection().unitVector();
