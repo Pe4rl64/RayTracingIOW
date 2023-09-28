@@ -4,8 +4,8 @@
 
 #include "Interval.h"
 
-rtx::Color::Color()
-	: r(0.0f), g(0.0f), b(0.0f)
+rtx::Color::Color(float value)
+	: r(value), g(value), b(value)
 {
 }
 

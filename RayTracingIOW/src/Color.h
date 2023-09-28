@@ -6,7 +6,7 @@ namespace rtx {
 	class Color
 	{
 	public:
-		Color();
+		Color(float value);
 
 		Color(float r, float g, float b);
 
