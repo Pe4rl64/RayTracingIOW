@@ -5,11 +5,6 @@ namespace rtx {
 	{
 	public:
 		/// <summary>
-		/// Constructs an empty interval.
-		/// </summary>
-		Interval();
-
-		/// <summary>
 		/// Constructs an interval [minimum, maximum].
 		/// </summary>
 		/// <param name="minimum">The starting point of the interval.</param>

@@ -1,11 +1,8 @@
 #include "Interval.h"
 
-#include "Utils.h"
+#include <limits>
 
-rtx::Interval::Interval()
-	: minimum(infinity), maximum(-infinity)
-{
-}
+#include "Utils.h"
 
 rtx::Interval::Interval(float minimum, float maximum)
 	: minimum(minimum), maximum(maximum)
@@ -33,5 +30,5 @@ float rtx::Interval::clamp(float number) const
 	return number;
 }
 
-const rtx::Interval rtx::Interval::empty(infinity, -infinity);
-const rtx::Interval rtx::Interval::universe(-infinity, infinity);
+const rtx::Interval rtx::Interval::empty(std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
+const rtx::Interval rtx::Interval::universe(-std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity());
