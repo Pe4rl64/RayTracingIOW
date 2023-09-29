@@ -20,8 +20,8 @@ int main()
 
 	auto ground = std::make_shared<rtx::Lambertian>(rtx::Color(0.8f, 0.8f, 0.0f));
 	auto center = std::make_shared<rtx::Lambertian>(rtx::Color(0.7f, 0.3f, 0.3f));
-	auto left = std::make_shared<rtx::Metal>(rtx::Color(0.8f, 0.8f, 0.8f));
-	auto right = std::make_shared<rtx::Metal>(rtx::Color(0.8f, 0.6f, 0.2f));
+	auto left = std::make_shared<rtx::Metal>(rtx::Color(0.8f, 0.8f, 0.8f), 0.3f);
+	auto right = std::make_shared<rtx::Metal>(rtx::Color(0.8f, 0.6f, 0.2f), 1.0f);
 
 	world.add(std::make_shared<rtx::Sphere>(rtx::Point3(0.0f, -100.5f, -1.0f), 100.0f, ground));
 	world.add(std::make_shared<rtx::Sphere>(rtx::Point3(0.0f, 0.0f, -1.0f), 0.5f, center));
