@@ -158,6 +158,14 @@ rtx::Vec3 rtx::Vec3::reflect(const Vec3& normal) const
 	return ((*this) - 2 * dot((*this), normal) * normal);
 }
 
+rtx::Vec3 rtx::Vec3::refract(const Vec3& normal, float refractionRatio) const
+{
+	float cosTheta = std::fmin(dot(-(*this), normal), 1.0f);
+	Vec3 perpendicularRefraction = refractionRatio * ((*this) + cosTheta * normal);
+	Vec3 parallelRefraction = -std::sqrtf(std::abs(1.0f - perpendicularRefraction.lengthSquared())) * normal;
+	return perpendicularRefraction + parallelRefraction;
+}
+
 float rtx::Vec3::dot(const Vec3& x, const Vec3& y)
 {
 	return x.dot(y);
@@ -171,6 +179,11 @@ rtx::Vec3 rtx::Vec3::cross(const Vec3& x, const Vec3& y)
 rtx::Vec3 rtx::Vec3::reflect(const Vec3& vector, const Vec3& normal)
 {
 	return vector.reflect(normal);
+}
+
+rtx::Vec3 rtx::Vec3::refract(const Vec3& unitVector, const Vec3& normal, float refractionRatio)
+{
+	return unitVector.refract(normal, refractionRatio);
 }
 
 std::ostream& rtx::operator<<(std::ostream& stream, const rtx::Vec3& vector)

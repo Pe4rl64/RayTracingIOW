@@ -39,10 +39,12 @@ namespace rtx {
 		void normalize();
 		bool nearZero();
 		Vec3 reflect(const Vec3& normal) const;
+		Vec3 refract(const Vec3& normal, float etaiOverEtat) const;
 
 		static float dot(const Vec3& x, const Vec3& y);
 		static Vec3 cross(const Vec3& x, const Vec3& y);
 		static Vec3 reflect(const Vec3& vector, const Vec3& normal);
+		static Vec3 refract(const Vec3& unitVector, const Vec3& normal, float etaiOverEtat);
 
 		float x, y, z;
 	};
