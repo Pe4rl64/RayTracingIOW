@@ -1,13 +1,16 @@
 #include "Vec3.h"
 
 #include <cmath>
-#include <thread>
-#include <chrono>
 
 #include "Utils.h"
 
 rtx::Vec3::Vec3()
-	: x(0.0f), y(0.0f), z(0.0f)
+	:x(0.0f), y(0.0f), z(0.0f)
+{
+}
+
+rtx::Vec3::Vec3(float value)
+	: x(value), y(value), z(value)
 {
 }
 
@@ -31,6 +34,31 @@ rtx::Vec3 rtx::Vec3::random(float minimum, float maximum)
 rtx::Vec3 rtx::Vec3::randomUnit()
 {
 	return random().unitVector();
+}
+
+float rtx::Vec3::dot(const Vec3& x, const Vec3& y)
+{
+	return x.x * y.x + x.y * y.y + x.z * y.z;
+}
+
+rtx::Vec3 rtx::Vec3::cross(const Vec3& x, const Vec3& y)
+{
+	return Vec3(x.y * y.z - x.z * y.y,
+		x.z * y.x - x.x * y.z,
+		x.x * y.y - x.y * y.x);
+}
+
+rtx::Vec3 rtx::Vec3::reflect(const Vec3& vector, const Vec3& normal)
+{
+	return (vector - 2 * dot(vector, normal) * normal);
+}
+
+rtx::Vec3 rtx::Vec3::refract(const Vec3& unitVector, const Vec3& normal, float refractionRatio)
+{
+	float cosTheta = std::fmin(dot(-unitVector, normal), 1.0f);
+	Vec3 perpendicularRefraction = refractionRatio * (unitVector + cosTheta * normal);
+	Vec3 parallelRefraction = -std::sqrtf(std::abs(1.0f - perpendicularRefraction.lengthSquared())) * normal;
+	return perpendicularRefraction + parallelRefraction;
 }
 
 rtx::Vec3 rtx::Vec3::operator+(const Vec3& other) const
@@ -75,44 +103,32 @@ rtx::Vec3 rtx::Vec3::operator/(float scalar) const
 
 void rtx::Vec3::operator+=(const Vec3& other)
 {
-	x += other.x;
-	y += other.y;
-	z += other.z;
+	(*this) = (*this) + other;
 }
 
 void rtx::Vec3::operator-=(const Vec3& other)
 {
-	x -= other.x;
-	y -= other.y;
-	z -= other.z;
+	(*this) = (*this) - other;
 }
 
 void rtx::Vec3::operator*=(const Vec3& other)
 {
-	x *= other.x;
-	y *= other.y;
-	z *= other.z;
+	(*this) = (*this) * other;
 }
 
 void rtx::Vec3::operator*=(float scalar)
 {
-	x *= scalar;
-	y *= scalar;
-	z *= scalar;
+	(*this) = (*this) * scalar;
 }
 
 void rtx::Vec3::operator/=(const Vec3& other)
 {
-	x /= other.x;
-	y /= other.y;
-	z /= other.z;
+	(*this) = (*this) / other;
 }
 
 void rtx::Vec3::operator/=(float scalar)
 {
-	x /= scalar;
-	y /= scalar;
-	z /= scalar;
+	(*this) = (*this) / scalar;
 }
 
 float rtx::Vec3::length() const
@@ -125,18 +141,6 @@ float rtx::Vec3::lengthSquared() const
 	return x * x + y * y + z * z;
 }
 
-float rtx::Vec3::dot(const Vec3& other) const
-{
-	return x * other.x + y * other.y + z * other.z;
-}
-
-rtx::Vec3 rtx::Vec3::cross(const Vec3& other) const
-{
-	return Vec3(y * other.z - z * other.y,
-		z * other.x - x * other.z,
-		x * other.y - y * other.x);
-}
-
 rtx::Vec3 rtx::Vec3::unitVector() const
 {
 	return (*this) / length();
@@ -147,43 +151,9 @@ void rtx::Vec3::normalize()
 	(*this) /= length();
 }
 
-bool rtx::Vec3::nearZero()
+bool rtx::Vec3::nearZero(float zero)
 {
-	float zero = 1e-8f; // absolute value for which zero is assumed
 	return (std::abs(x) < zero && std::abs(y) < zero && std::abs(z) < zero);
-}
-
-rtx::Vec3 rtx::Vec3::reflect(const Vec3& normal) const
-{
-	return ((*this) - 2 * dot((*this), normal) * normal);
-}
-
-rtx::Vec3 rtx::Vec3::refract(const Vec3& normal, float refractionRatio) const
-{
-	float cosTheta = std::fmin(dot(-(*this), normal), 1.0f);
-	Vec3 perpendicularRefraction = refractionRatio * ((*this) + cosTheta * normal);
-	Vec3 parallelRefraction = -std::sqrtf(std::abs(1.0f - perpendicularRefraction.lengthSquared())) * normal;
-	return perpendicularRefraction + parallelRefraction;
-}
-
-float rtx::Vec3::dot(const Vec3& x, const Vec3& y)
-{
-	return x.dot(y);
-}
-
-rtx::Vec3 rtx::Vec3::cross(const Vec3& x, const Vec3& y)
-{
-	return x.cross(y);
-}
-
-rtx::Vec3 rtx::Vec3::reflect(const Vec3& vector, const Vec3& normal)
-{
-	return vector.reflect(normal);
-}
-
-rtx::Vec3 rtx::Vec3::refract(const Vec3& unitVector, const Vec3& normal, float refractionRatio)
-{
-	return unitVector.refract(normal, refractionRatio);
 }
 
 std::ostream& rtx::operator<<(std::ostream& stream, const rtx::Vec3& vector)

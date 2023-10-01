@@ -12,7 +12,7 @@ rtx::Material::ScatterResult rtx::Lambertian::scatter(const Ray& input, const Hi
 	Vec3 scatterDirection = record.normal + Vec3::randomUnit();
 
 	// Avoid zero ray direction vector
-	if (scatterDirection.nearZero())
+	if (scatterDirection.nearZero(1e-8f))
 		scatterDirection = record.normal;
 
 	return { false, { record.point, scatterDirection }, m_albedo };
