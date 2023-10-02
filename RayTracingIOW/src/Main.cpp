@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Lambertian.h"
 #include "Metal.h"
+#include "Dielectric.h"
 
 int main()
 {
@@ -19,8 +20,8 @@ int main()
 	rtx::HittableList world;
 
 	auto ground = std::make_shared<rtx::Lambertian>(rtx::Color(0.8f, 0.8f, 0.0f));
-	auto center = std::make_shared<rtx::Lambertian>(rtx::Color(0.7f, 0.3f, 0.3f));
-	auto left = std::make_shared<rtx::Metal>(rtx::Color(0.8f, 0.8f, 0.8f), 0.3f);
+	auto center = std::make_shared<rtx::Dielectric>(1.5f);
+	auto left = std::make_shared<rtx::Dielectric>(1.5f);
 	auto right = std::make_shared<rtx::Metal>(rtx::Color(0.8f, 0.6f, 0.2f), 1.0f);
 
 	world.add(std::make_shared<rtx::Sphere>(rtx::Point3(0.0f, -100.5f, -1.0f), 100.0f, ground));

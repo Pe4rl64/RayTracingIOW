@@ -107,7 +107,8 @@ rtx::Vec3 rtx::Camera::pixelSampleSquare() const
 
 rtx::Color rtx::Camera::rayColor(const Ray& ray, int bounce, const Hittable& world) const
 {
-	Hittable::HitRecord record = world.hit(ray, Interval(0, std::numeric_limits<float>::infinity()));
+	// Accounting for hit points inside spheres because of floating point precision errors
+	Hittable::HitRecord record = world.hit(ray, Interval(0.0001f, std::numeric_limits<float>::infinity()));
 
 	// If ray bounce limit is met, no light.
 	if (bounce <= 0)
@@ -118,10 +119,6 @@ rtx::Color rtx::Camera::rayColor(const Ray& ray, int bounce, const Hittable& wor
 	if (record.t >= 0)
 	{
 		Material::ScatterResult result = record.material->scatter(ray, record);
-
-		// Accounting for hit points inside spheres because of floating point precision errors
-		// (moving the hit point a small amount along the normal to make sure it's always outside).
-		result.scattered.setOrigin(result.scattered.getOrigin() + record.normal * 0.0001f);
 
 		if (!result.absorbed)
 		{

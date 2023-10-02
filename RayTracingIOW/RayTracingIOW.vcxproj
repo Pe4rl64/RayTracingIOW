@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Color.cpp" />
+    <ClCompile Include="src\Dielectric.cpp" />
     <ClCompile Include="src\Hittable.cpp" />
     <ClCompile Include="src\HittableList.cpp" />
     <ClCompile Include="src\Interval.cpp" />
@@ -171,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\Dielectric.h" />
     <ClInclude Include="src\Interval.h" />
     <ClInclude Include="src\HittableList.h" />
     <ClInclude Include="src\Lambertian.h" />
