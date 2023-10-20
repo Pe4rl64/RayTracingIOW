@@ -55,9 +55,15 @@ rtx::Vec3 rtx::Vec3::reflect(const Vec3& vector, const Vec3& normal)
 
 rtx::Vec3 rtx::Vec3::refract(const Vec3& unitVector, const Vec3& normal, float refractionRatio)
 {
+	// cos of angle between incident and normal
 	float cosTheta = std::fmin(dot(-unitVector, normal), 1.0f);
+
+	// component of the refraction perpendicular to the normal
 	Vec3 perpendicularRefraction = refractionRatio * (unitVector + cosTheta * normal);
+
+	// component of the refraction parallel to the normal
 	Vec3 parallelRefraction = -std::sqrtf(std::abs(1.0f - perpendicularRefraction.lengthSquared())) * normal;
+
 	return perpendicularRefraction + parallelRefraction;
 }
 
