@@ -219,7 +219,7 @@ namespace rtx {
 		/// <b>true</b> if the absolute values of the individual components are &lt; zero,
 		/// <b>false</b> otherwise.
 		/// </returns>
-		bool nearZero(float zero);
+		bool nearZero(float zero) const;
 
 		/// <summary>
 		/// Outputs a given vector to the given output stream.

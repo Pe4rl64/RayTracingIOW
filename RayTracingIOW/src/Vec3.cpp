@@ -157,7 +157,7 @@ void rtx::Vec3::normalize()
 	(*this) /= length();
 }
 
-bool rtx::Vec3::nearZero(float zero)
+bool rtx::Vec3::nearZero(float zero) const
 {
 	return (std::abs(x) < zero && std::abs(y) < zero && std::abs(z) < zero);
 }
