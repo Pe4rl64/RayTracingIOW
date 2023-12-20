@@ -1,10 +1,18 @@
 #pragma once
 
 #include <random>
+#include <numbers>
 
 namespace rtx {
-	constexpr float degreesToRadians(float degrees);
-	constexpr float radiansToDegrees(float radians);
+	constexpr float degreesToRadians(float degrees)
+	{
+		return degrees * std::numbers::pi_v<float> / 180;
+	}
+
+	constexpr float radiansToDegrees(float radians)
+	{
+		return radians * 180 / std::numbers::pi_v<float>;
+	}
 
 	/// <summary>
 	/// Returns a random float.

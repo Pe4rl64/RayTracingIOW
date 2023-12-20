@@ -36,9 +36,6 @@
     <ClCompile Include="src\HittableList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Interval.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

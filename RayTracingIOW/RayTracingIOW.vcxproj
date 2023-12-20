@@ -167,7 +167,6 @@
     <ClCompile Include="src\Point3.h" />
     <ClCompile Include="src\Ray.cpp" />
     <ClCompile Include="src\Sphere.cpp" />
-    <ClCompile Include="src\Utils.cpp" />
     <ClCompile Include="src\Vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
