@@ -10,9 +10,9 @@ namespace rtx {
 	class Camera
 	{
 	public:
-		Camera(float aspectRatio, int imageWidth, int samplesPerPixel, int maxBounces);
+		Camera(float aspectRatio, int imageWidth, int samplesPerPixel, int maxBounces, float horizontalFov);
 
-		Camera(int imageWidth, int imageHeight, int samplesPerPixel, int maxBounces);
+		Camera(int imageWidth, int imageHeight, int samplesPerPixel, int maxBounces, float horizontalFov);
 
 		void render(std::ostream& stream, const Hittable& world);
 
@@ -30,6 +30,7 @@ namespace rtx {
 		float m_aspectRatio;
 		int m_samplesPerPixel;
 		int m_maxBounces;
+		float m_horizontalFov; // Horizontal view angle degrees
 
 		Point3 m_cameraCenter;
 		Vec3 m_pixelDeltaHorizontal, m_pixelDeltaVertical;

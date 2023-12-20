@@ -1,28 +1,31 @@
 #include "Camera.h"
 
 #include <limits>
+#include <cmath>
 
 #include "Utils.h"
 #include "Material.h"
 
-rtx::Camera::Camera(float aspectRatio, int imageWidth, int samplesPerPixel, int maxBounces)
+rtx::Camera::Camera(float aspectRatio, int imageWidth, int samplesPerPixel, int maxBounces, float horizontalFov)
 	:
 	m_imageWidth(imageWidth),
 	m_imageHeight(static_cast<int>(imageWidth / aspectRatio)),
 	m_aspectRatio(((float)m_imageWidth) / m_imageHeight),
 	m_samplesPerPixel(samplesPerPixel),
-	m_maxBounces(maxBounces)
+	m_maxBounces(maxBounces),
+	m_horizontalFov(horizontalFov)
 {
 	initialize();
 }
 
-rtx::Camera::Camera(int imageWidth, int imageHeight, int samplesPerPixel, int maxBounces)
+rtx::Camera::Camera(int imageWidth, int imageHeight, int samplesPerPixel, int maxBounces, float horizontalFov)
 	:
 	m_imageWidth(imageWidth),
 	m_imageHeight(imageHeight),
 	m_aspectRatio(((float)m_imageWidth) / m_imageHeight),
 	m_samplesPerPixel(samplesPerPixel),
-	m_maxBounces(maxBounces)
+	m_maxBounces(maxBounces),
+	m_horizontalFov(horizontalFov)
 {
 	initialize();
 }
@@ -66,8 +69,10 @@ void rtx::Camera::initialize()
 {
 	m_cameraCenter = Point3(0, 0, 0);
 	float focalLenght = 1.0f;
-	float viewportHeight = 2.0f;
-	float viewportWidth = viewportHeight * m_aspectRatio; // Viewport width can be less than 1 since real valued. Uses real aspect ratio
+	float theta = degreesToRadians(m_horizontalFov);
+	float horizontalRatio = std::tanf(theta / 2);
+	float viewportWidth = 2.0f * horizontalRatio * focalLenght; 
+	float viewportHeight = viewportWidth / m_aspectRatio; // Viewport width can be less than 1 since real valued. Uses real aspect ratio
 
 	// Vector across the horizontal edge of the viewport (starting from the top left corner)
 	Vec3 viewportHorizontal(viewportWidth, 0, 0);
@@ -128,6 +133,7 @@ rtx::Color rtx::Camera::rayColor(const Ray& ray, int bounce, const Hittable& wor
 		return Color(0, 0, 0);
 	}
 
+	// Gradient for background based on ray direction (in case of no hit)
 	rtx::Vec3 unitDirection = ray.getDirection().unitVector();
 	float a = (unitDirection.y + 1) / 2;
 	return (1 - a) * rtx::Color(1, 1, 1) + a * rtx::Color(0.5f, 0.7f, 1.0f);
