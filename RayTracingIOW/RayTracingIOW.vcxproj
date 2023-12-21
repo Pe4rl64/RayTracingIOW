@@ -177,6 +177,7 @@
     <ClInclude Include="src\Lambertian.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\Metal.h" />
+    <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Sphere.h" />
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\Hittable.h" />
