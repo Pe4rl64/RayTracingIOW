@@ -61,12 +61,9 @@ void rtx::Renderer::perPixel(uint32_t x, uint32_t y, const Camera& camera, const
 
 	color /= (float)m_samples;
 	Interval interval(0, 1);
-	color.r = interval.clamp(color.r);
-	color.g = interval.clamp(color.g);
-	color.b = interval.clamp(color.b);
-	color.a = interval.clamp(color.a);
+	interval.clamp(color);
 
-	m_finalImage[x + y * m_imageWidth] = convertToRGBA(color);
+	m_finalImage[x + y * m_imageWidth] = convertToRGBA(linearToGamma(color));
 }
 
 rtx::Vec4 rtx::Renderer::rayColor(Ray ray, const Hittable& world) const

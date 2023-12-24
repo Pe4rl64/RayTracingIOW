@@ -25,11 +25,6 @@ rtx::Vec4::Vec4(float r, float g, float b, float a)
 {
 }
 
-float rtx::Vec4::linearToGamma(float linearComponent)
-{
-	return std::sqrt(linearComponent);
-}
-
 rtx::Vec4 rtx::Vec4::operator+(const Vec4& other) const
 {
 	return Vec4(r + other.r, g + other.g, b + other.b, a + other.a);

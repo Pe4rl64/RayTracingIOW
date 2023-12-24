@@ -30,5 +30,15 @@ float rtx::Interval::clamp(float number) const
 	return number;
 }
 
+rtx::Vec4 rtx::Interval::clamp(const Vec4& vector) const
+{
+	float r = clamp(vector.r);
+	float g = clamp(vector.g);
+	float b = clamp(vector.b);
+	float a = clamp(vector.a);
+
+	return Vec4(r, g, b, a);
+}
+
 const rtx::Interval rtx::Interval::empty(std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
 const rtx::Interval rtx::Interval::universe(-std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity());

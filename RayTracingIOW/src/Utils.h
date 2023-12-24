@@ -6,6 +6,15 @@
 #include "Vec4.h"
 
 namespace rtx {
+	/// <summary>
+	/// Converts the real valued components of a color to integer valued ones
+	/// in the range [0, 255].
+	/// </summary>
+	/// <param name="color">The color to convert.</param>
+	/// <returns>
+	/// An unsigned integer containing the components in the following order: RGBA,
+	/// with R being least significative byte and A being the most significative.
+	/// </returns>
 	constexpr uint32_t convertToRGBA(const Vec4& color)
 	{
 		uint8_t r = (uint8_t)(color.r * 255.0f);
@@ -15,6 +24,14 @@ namespace rtx {
 
 		return (a << 24) | (b << 16) | (g << 8) | r;
 	}
+
+	/// <summary>
+	/// Converts input color to gamma space by square rooting its componenets
+	/// (except the alfa component), and returns it.
+	/// </summary>
+	/// <param name="color">The color to convert to gamma space.</param>
+	/// <returns>The converted color.</returns>
+	Vec4 linearToGamma(const Vec4& color);
 
 	constexpr float degreesToRadians(float degrees)
 	{

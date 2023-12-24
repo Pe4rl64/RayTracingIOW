@@ -14,8 +14,6 @@ namespace rtx {
 
 		Vec4(float r, float g, float b, float a);
 
-		static float linearToGamma(float linearComponent);
-
 		Vec4 operator+(const Vec4& other) const;
 		Vec4 operator-() const;
 		Vec4 operator-(const Vec4& other) const;

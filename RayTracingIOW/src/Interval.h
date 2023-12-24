@@ -1,6 +1,8 @@
 #pragma once
 
 namespace rtx {
+	class Vec4;
+
 	class Interval
 	{
 	public:
@@ -35,6 +37,14 @@ namespace rtx {
 		/// <param name="number">The number to clamp.</param>
 		/// <returns>The clamped number.</returns>
 		float clamp(float number) const;
+
+		/// <summary>
+		/// Clamps the given vector's componenets to the range of this interval,
+		/// and returns it.
+		/// </summary>
+		/// <param name="vector">The vector whose components need to be clamped.</param>
+		/// <returns>The vector with the clamped components.</returns>
+		Vec4 clamp(const Vec4& vector) const;
 
 		float minimum, maximum;
 		static const Interval empty, universe;
