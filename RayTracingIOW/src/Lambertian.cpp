@@ -2,7 +2,7 @@
 
 #include "Hittable.h"
 
-rtx::Lambertian::Lambertian(const Color& albedo)
+rtx::Lambertian::Lambertian(const Vec4& albedo)
 	: m_albedo(albedo)
 {
 }

@@ -6,10 +6,10 @@ namespace rtx {
 	class Lambertian : public Material
 	{
 	public:
-		Lambertian(const Color& albedo);
+		Lambertian(const Vec4& albedo);
 
 		ScatterResult scatter(const Ray& input, const Hittable::HitRecord& record) const override;
 	private:
-		Color m_albedo;
+		Vec4 m_albedo;
 	};
 }
