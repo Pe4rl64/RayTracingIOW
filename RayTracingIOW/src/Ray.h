@@ -10,8 +10,8 @@ namespace rtx {
 
 		Ray(const Point3& origin, const Vec3& direction);
 
-		Point3 getOrigin() const { return m_origin; }
-		Vec3 getDirection() const { return m_direction; }
+		const Point3& getOrigin() const { return m_origin; }
+		const Vec3& getDirection() const { return m_direction; }
 
 		void setOrigin(const Point3& origin);
 		void setDirection(const Vec3& direction);

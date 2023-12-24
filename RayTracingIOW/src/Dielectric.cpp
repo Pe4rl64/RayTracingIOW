@@ -11,7 +11,7 @@ rtx::Dielectric::Dielectric(float indexOfRefraction)
 
 rtx::Material::ScatterResult rtx::Dielectric::scatter(const Ray& input, const Hittable::HitRecord& record) const
 {
-    Color attenuation(1.0f);
+    Vec4 attenuation(1.0f);
 
     float refractionRatio = record.frontFace ? (1 / m_indexOfRefraction) : m_indexOfRefraction; // air is always the other medium
     Vec3 unitDirection = input.getDirection().unitVector();

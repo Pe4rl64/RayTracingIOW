@@ -1,6 +1,6 @@
 #include "Metal.h"
 
-rtx::Metal::Metal(const Color& albedo, float fuzz)
+rtx::Metal::Metal(const Vec4& albedo, float fuzz)
     : m_albedo(albedo), m_fuzz(fuzz)
 {
 }

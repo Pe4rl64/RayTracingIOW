@@ -1,39 +1,74 @@
 #pragma once
 
-#include "Color.h"
-#include "Ray.h"
-#include "Hittable.h"
+#include <vector>
 
-#include <iostream>
+#include "Hittable.h"
 
 namespace rtx {
 	class Camera
 	{
 	public:
-		Camera(float aspectRatio, int imageWidth, int samplesPerPixel, int maxBounces, float horizontalFov);
+		/// <summary>
+		/// Constructs a camera with the given arguments. This version automatically calculates
+		/// the image heigth based on the aspect ratio.
+		/// </summary>
+		/// <param name="center">The center of the camera in 3d space.</param>
+		/// <param name="focalLength">The distance between the camera center and the viewport.</param>
+		/// <param name="imageWidth">The width of the final image.</param>
+		/// <param name="aspectRatio">The aspect ratio of image.</param>
+		/// <param name="horizontalFov">The horizontal view angle of the camera in degrees.</param>
+		Camera(const Vec3& center, float focalLength, uint32_t imageWidth, float aspectRatio, float horizontalFov);
 
-		Camera(int imageWidth, int imageHeight, int samplesPerPixel, int maxBounces, float horizontalFov);
+		/// <summary>
+		/// Constructs a camera with the given arguments. This version automatically calculates
+		/// the aspect ratio o the image based on the width and height.
+		/// </summary>
+		/// <param name="center">The center of the camera in 3d space.</param>
+		/// <param name="focalLength">The distance between the camera center and the viewport.</param>
+		/// <param name="imageWidth">The width of the final image.</param>
+		/// <param name="imageHeight">The heigth of the final image.</param>
+		/// <param name="horizontalFov">The horizontal view angle of the camera in degrees.</param>
+		Camera(const Vec3& center, float focalLength, uint32_t imageWidth, uint32_t imageHeight, float horizontalFov);
 
-		void render(std::ostream& stream, const Hittable& world);
+		/// <summary>
+		/// Returns the camera center position.
+		/// </summary>
+		/// <returns>The camera center postion.</returns>
+		const Point3& getCenter() const { return m_center; }
+
+		/// <summary>
+		/// Returns the vertical delta (distance) between each pixel in the viewport.
+		/// </summary>
+		/// <returns>The vertical delta.</returns>
+		const Vec3& getPixelDeltaVertical() const { return m_pixelDeltaVertical; }
+
+		/// <summary>
+		/// Returns the horizontal delta (distance) between each pixel in the viewport.
+		/// </summary>
+		/// <returns></returns>
+		const Vec3& getPixelDeltaHorizontal() const { return m_pixelDeltaHorizontal; }
+
+		/// <summary>
+		/// Returns the cached ray directions from the camera center to the viewport pixels.
+		/// Beware that they are not normalized.
+		/// </summary>
+		/// <returns>The not normalized cached ray directions.</returns>
+		const std::vector<Vec3>& getRayDirections() const { return m_rayDirections; }
 
 	private:
-		void initialize();
-
-		Ray getRay(const Point3& pixelCenter) const;
-
-		Vec3 pixelSampleSquare() const;
-
-		Color rayColor(const Ray& ray, int bounce, const Hittable& world) const;
+		/// <summary>
+		/// Calculates the ray directions from the camera center to the viewport pixels.
+		/// </summary>
+		void calculateRayDirections();
 		
 	private:
-		int m_imageWidth, m_imageHeight;
+		Vec3 m_center;
+		float m_focalLength;
+		uint32_t m_imageWidth, m_imageHeight;
 		float m_aspectRatio;
-		int m_samplesPerPixel;
-		int m_maxBounces;
-		float m_horizontalFov; // Horizontal view angle degrees
+		float m_horizontalFov;
 
-		Point3 m_cameraCenter;
-		Vec3 m_pixelDeltaHorizontal, m_pixelDeltaVertical;
-		Point3 m_pixelUpperLeft;
+		Vec3 m_pixelDeltaVertical, m_pixelDeltaHorizontal;
+		std::vector<Vec3> m_rayDirections;
 	};
 }
