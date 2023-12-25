@@ -15,6 +15,7 @@
 #include "Metal.h"
 #include "Dielectric.h"
 #include "Renderer.h"
+#include "Timer.h"
 
 int main()
 {
@@ -42,7 +43,12 @@ int main()
 
 	std::cout << "Starting calculations.\n";
 
-	uint32_t* imageBuffer = renderer.render(world, camera);
+	uint32_t* imageBuffer;
+	
+	{
+		rtx::debug::Timer t;
+		imageBuffer = renderer.render(world, camera);
+	}
 
 	if (stbi_write_png(
 		"renders/image.png",

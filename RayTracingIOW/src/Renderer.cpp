@@ -1,6 +1,7 @@
 #include "Renderer.h"
 
-#include <iostream>
+#include <algorithm>
+#include <execution>
 
 #include "Vec4.h"
 #include "Ray.h"
@@ -14,9 +15,12 @@ rtx::Renderer::Renderer(uint32_t imageWidth, float aspectRatio, uint32_t samples
 	m_finalImage(new uint32_t[(size_t)(imageWidth * imageWidth / aspectRatio)]),
 	m_imageWidth(imageWidth),
 	m_imageHeight((uint32_t)(imageWidth / aspectRatio)),
+	m_widthIterator(m_imageWidth),
+	m_heightIterator(m_imageHeight),
 	m_samples(samples),
 	m_maxBounces(maxBounces)
 {
+	initIterators();
 }
 
 rtx::Renderer::Renderer(uint32_t imageWidth, uint32_t imageHeight, uint32_t samples, uint32_t maxBounces)
@@ -24,22 +28,36 @@ rtx::Renderer::Renderer(uint32_t imageWidth, uint32_t imageHeight, uint32_t samp
 	m_finalImage(new uint32_t[imageWidth * imageHeight]),
 	m_imageWidth(imageWidth),
 	m_imageHeight(imageHeight),
+	m_widthIterator(m_imageWidth),
+	m_heightIterator(m_imageHeight),
 	m_samples(samples),
 	m_maxBounces(maxBounces)
 {
+	initIterators();
 }
 
 uint32_t* rtx::Renderer::render(const Hittable& world, const Camera& camera)
 {
+#define MT 1
+#if MT == 1
+	std::for_each(std::execution::par, m_heightIterator.begin(), m_heightIterator.end(),
+		[this, &camera, &world](uint32_t i)
+		{
+			for (uint32_t j = 0; j < m_imageWidth; ++j)
+			{
+				perPixel(j, i, camera, world);
+			}
+		}
+	);
+#else
 	for (uint32_t i = 0; i < m_imageHeight; ++i)
 	{
-		std::cout << "Scanning line " << i + 1 << '\n';
-
 		for (uint32_t j = 0; j < m_imageWidth; ++j)
 		{
 			perPixel(j, i, camera, world);
 		}
 	}
+#endif
 
 	return m_finalImage;
 }
@@ -101,4 +119,17 @@ rtx::Point3 rtx::Renderer::pixelSampleSquare(const Point3& pixelCenter, const Ve
 	float py = -0.5f + randomFloat(0, 1);
 
 	return pixelCenter + (px * horizontalDelta) + (py * verticalDelta);
+}
+
+void rtx::Renderer::initIterators()
+{
+	for (int i = 0; i < m_imageWidth; ++i)
+	{
+		m_widthIterator[i] = i;
+	}
+
+	for (int i = 0; i < m_imageHeight; ++i)
+	{
+		m_heightIterator[i] = i;
+	}
 }

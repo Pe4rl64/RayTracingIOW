@@ -50,7 +50,7 @@ namespace rtx {
 	inline float randomFloat()
 	{
 		static std::uniform_real_distribution<float> distribution;
-		static std::mt19937 generator;
+		static thread_local std::mt19937 generator;
 		return distribution(generator);
 	}
 	
@@ -63,7 +63,7 @@ namespace rtx {
 	inline float randomFloat(float minimum, float maximum)
 	{
 		static std::uniform_real_distribution<float> distribution(minimum, maximum);
-		static std::mt19937 generator;
+		static thread_local std::mt19937 generator;
 		return distribution(generator);
 	}
 }
