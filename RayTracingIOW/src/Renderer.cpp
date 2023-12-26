@@ -123,12 +123,12 @@ rtx::Point3 rtx::Renderer::pixelSampleSquare(const Point3& pixelCenter, const Ve
 
 void rtx::Renderer::initIterators()
 {
-	for (int i = 0; i < m_imageWidth; ++i)
+	for (uint32_t i = 0; i < m_imageWidth; ++i)
 	{
 		m_widthIterator[i] = i;
 	}
 
-	for (int i = 0; i < m_imageHeight; ++i)
+	for (uint32_t i = 0; i < m_imageHeight; ++i)
 	{
 		m_heightIterator[i] = i;
 	}
