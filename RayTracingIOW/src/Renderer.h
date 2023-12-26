@@ -1,6 +1,7 @@
 #pragma 
 
 #include <cstdint>
+#include <vector>
 
 namespace rtx {
 	// Forward declarations for the referenced/pointers objects
@@ -70,9 +71,13 @@ namespace rtx {
 		/// <returns>The random point.</returns>
 		Point3 pixelSampleSquare(const Point3& pixelCenter, const Vec3& horizontalDelta, const Vec3& verticalDelta) const;
 
+		void initIterators();
+
 	private:
 		uint32_t* m_finalImage;
 		uint32_t m_imageWidth, m_imageHeight;
+
+		std::vector<uint32_t> m_widthIterator, m_heightIterator;
 
 		uint32_t m_samples;
 		uint32_t m_maxBounces;
