@@ -33,16 +33,16 @@ int main()
 	world.add(std::make_shared<rtx::Sphere>(rtx::Point3(-1.0f, 0.0f, -1.0f), -0.4f, left)); // Hollow glass sphere
 	world.add(std::make_shared<rtx::Sphere>(rtx::Point3(1.0f, 0.0f, -1.0f), 0.5f, right));
 
-	uint32_t imageWidth = 1280u, imageHeight = 720u;
+	uint32_t imageWidth = 1920u, imageHeight = 1080u;
 
-	rtx::Point3 lookFrom(0, 0, 0.5f);
+	rtx::Point3 lookFrom(-2, 2, 1);
 	rtx::Point3 lookAt(0, 0, -1);
 
 	// Camera
-	rtx::Camera camera(lookFrom, lookAt - lookFrom, rtx::Vec3(0, 1, 0), 1.0f, imageWidth, imageHeight, 120.0f);
+	rtx::Camera camera(lookFrom, lookAt - lookFrom, rtx::Vec3(0, 1, 0), 1.0f, imageWidth, imageHeight, 40.0f);
 
 	// Rendering
-	rtx::Renderer renderer(imageWidth, imageHeight, 8, 8);
+	rtx::Renderer renderer(imageWidth, imageHeight, 100, 50);
 
 	std::cout << "Starting calculations.\n";
 

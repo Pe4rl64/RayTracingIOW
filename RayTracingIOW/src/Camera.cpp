@@ -63,9 +63,9 @@ void rtx::Camera::calculateRayDirections()
 	Vec3 viewportVertical = -yUnit * (float)viewportHeight;
 
 	// Horizontal delta vector from pixel to pixel
-	m_pixelDeltaHorizontal = viewportHorizontal / m_imageWidth;
+	m_pixelDeltaHorizontal = viewportHorizontal / (float)m_imageWidth;
 	// Vertical delta vector from pixel to pixel
-	m_pixelDeltaVertical = viewportVertical / m_imageHeight;
+	m_pixelDeltaVertical = viewportVertical / (float)m_imageHeight;
 
 	// Upper left corner of the viewport
 	Point3 viewportUpperLeft = m_center
@@ -86,7 +86,7 @@ void rtx::Camera::calculateRayDirections()
 
 			Point3 pixelCurrentCenter = pixelUpperLeft + pixelCurrentHorizontal + pixelCurrentVertical;
 
-			m_rayDirections[j + i * m_imageWidth] = m_center + pixelCurrentCenter;
+			m_rayDirections[j + i * m_imageWidth] = pixelCurrentCenter - m_center;
 		}
 	}
 }
