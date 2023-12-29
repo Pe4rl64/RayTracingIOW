@@ -6,9 +6,13 @@
 #include "Utils.h"
 #include "Material.h"
 
-rtx::Camera::Camera(const Vec3& center, float focalLength, uint32_t imageWidth, float aspectRatio, float horizontalFov)
+rtx::Camera::Camera(const Vec3& center, const Vec3& forwardDirection, const Vec3& upDirection,
+	float focalLength, uint32_t imageWidth, float aspectRatio, float horizontalFov
+)
 	:
 	m_center(center),
+	m_forwardDirection(forwardDirection),
+	m_upDirection(upDirection),
 	m_focalLength(focalLength),
 	m_imageWidth(imageWidth),
 	m_imageHeight((uint32_t)(imageWidth / aspectRatio)),
@@ -18,13 +22,17 @@ rtx::Camera::Camera(const Vec3& center, float focalLength, uint32_t imageWidth, 
 	m_pixelDeltaHorizontal(),
 	m_rayDirections()
 {
-	m_rayDirections.resize(m_imageWidth * m_imageHeight);
+	m_rayDirections.resize((size_t)m_imageWidth * m_imageHeight);
 	calculateRayDirections();
 }
 
-rtx::Camera::Camera(const Vec3& center, float focalLength, uint32_t imageWidth, uint32_t imageHeight, float horizontalFov)
+rtx::Camera::Camera(const Vec3& center, const Vec3& forwardDirection, const Vec3& upDirection,
+	float focalLength, uint32_t imageWidth, uint32_t imageHeight, float horizontalFov
+)
 	:
 	m_center(center),
+	m_forwardDirection(forwardDirection),
+	m_upDirection(upDirection),
 	m_focalLength(focalLength),
 	m_imageWidth(imageWidth),
 	m_imageHeight(imageHeight),
@@ -34,7 +42,7 @@ rtx::Camera::Camera(const Vec3& center, float focalLength, uint32_t imageWidth, 
 	m_pixelDeltaHorizontal(),
 	m_rayDirections()
 {
-	m_rayDirections.resize(m_imageWidth * m_imageHeight);
+	m_rayDirections.resize((size_t)m_imageWidth * m_imageHeight);
 	calculateRayDirections();
 }
 
@@ -45,19 +53,23 @@ void rtx::Camera::calculateRayDirections()
 	float viewportWidth = 2.0f * horizontalRatio * m_focalLength;
 	float viewportHeight = viewportWidth / m_aspectRatio;
 
+	Vec3 zUnit = -m_forwardDirection.unitVector();
+	Vec3 xUnit = Vec3::cross(m_upDirection, zUnit).unitVector();
+	Vec3 yUnit = Vec3::cross(zUnit, xUnit);
+
 	// Vector across the horizontal edge of the viewport (starting from the top left corner)
-	Vec3 viewportHorizontal(viewportWidth, 0, 0);
+	Vec3 viewportHorizontal = xUnit * (float)viewportWidth;
 	// Vector across the vertical edge of the viewport (starting from the top left corner)
-	Vec3 viewportVertical(0, -viewportHeight, 0);
+	Vec3 viewportVertical = -yUnit * (float)viewportHeight;
 
 	// Horizontal delta vector from pixel to pixel
-	m_pixelDeltaHorizontal = viewportHorizontal / ((float)m_imageWidth);
+	m_pixelDeltaHorizontal = viewportHorizontal / m_imageWidth;
 	// Vertical delta vector from pixel to pixel
-	m_pixelDeltaVertical = viewportVertical / ((float)m_imageHeight);
+	m_pixelDeltaVertical = viewportVertical / m_imageHeight;
 
 	// Upper left corner of the viewport
 	Point3 viewportUpperLeft = m_center
-		- rtx::Vec3(0, 0, m_focalLength)
+		- (zUnit * m_focalLength)
 		- ((viewportHorizontal + viewportVertical) / 2);
 	
 	// Upper left pixel

@@ -35,11 +35,14 @@ int main()
 
 	uint32_t imageWidth = 1280u, imageHeight = 720u;
 
+	rtx::Point3 lookFrom(0, 0, 0.5f);
+	rtx::Point3 lookAt(0, 0, -1);
+
 	// Camera
-	rtx::Camera camera(rtx::Point3(0.0f, 0.0f, 0.0f), 1.0f, imageWidth, imageHeight, 120.0f);
+	rtx::Camera camera(lookFrom, lookAt - lookFrom, rtx::Vec3(0, 1, 0), 1.0f, imageWidth, imageHeight, 120.0f);
 
 	// Rendering
-	rtx::Renderer renderer(imageWidth, imageHeight, 100, 50);
+	rtx::Renderer renderer(imageWidth, imageHeight, 8, 8);
 
 	std::cout << "Starting calculations.\n";
 
