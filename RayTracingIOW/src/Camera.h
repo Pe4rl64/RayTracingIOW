@@ -13,22 +13,32 @@ namespace rtx {
 		/// the image heigth based on the aspect ratio.
 		/// </summary>
 		/// <param name="center">The center of the camera in 3d space.</param>
+		/// <param name="forwardDirection">The direction at which the camera is looking at.</param>
+		/// <param name="upDirection">The upwards direction relative to the camera.</param>
 		/// <param name="focalLength">The distance between the camera center and the viewport.</param>
 		/// <param name="imageWidth">The width of the final image.</param>
 		/// <param name="aspectRatio">The aspect ratio of image.</param>
 		/// <param name="horizontalFov">The horizontal view angle of the camera in degrees.</param>
-		Camera(const Vec3& center, float focalLength, uint32_t imageWidth, float aspectRatio, float horizontalFov);
+		Camera(const Vec3& center, const Vec3& forwardDirection, const Vec3& upDirection,
+			float focalLength, uint32_t imageWidth, float aspectRatio,
+			float horizontalFov
+		);
 
 		/// <summary>
 		/// Constructs a camera with the given arguments. This version automatically calculates
 		/// the aspect ratio o the image based on the width and height.
 		/// </summary>
 		/// <param name="center">The center of the camera in 3d space.</param>
+		/// <param name="forwardDirection">The direction at which the camera is looking at.</param>
+		/// <param name="upDirection">The upwards direction relative to the camera.</param>
 		/// <param name="focalLength">The distance between the camera center and the viewport.</param>
 		/// <param name="imageWidth">The width of the final image.</param>
 		/// <param name="imageHeight">The heigth of the final image.</param>
 		/// <param name="horizontalFov">The horizontal view angle of the camera in degrees.</param>
-		Camera(const Vec3& center, float focalLength, uint32_t imageWidth, uint32_t imageHeight, float horizontalFov);
+		Camera(const Vec3& center, const Vec3& m_forwardDirection, const Vec3& upDirection,
+			float focalLength, uint32_t imageWidth, uint32_t imageHeight,
+			float horizontalFov
+		);
 
 		/// <summary>
 		/// Returns the camera center position.
@@ -63,6 +73,7 @@ namespace rtx {
 		
 	private:
 		Vec3 m_center;
+		Vec3 m_forwardDirection, m_upDirection;
 		float m_focalLength;
 		uint32_t m_imageWidth, m_imageHeight;
 		float m_aspectRatio;
