@@ -73,7 +73,7 @@ void rtx::Renderer::perPixel(uint32_t x, uint32_t y, const Camera& camera, const
 
 	color /= (float)m_samples;
 	Interval interval(0, 1);
-	interval.clamp(color);
+	color = interval.clamp(color);
 
 	m_finalImage[x + y * m_imageWidth] = convertToRGBA(linearToGamma(color));
 }
