@@ -39,7 +39,9 @@ int main()
 	rtx::Point3 lookAt(0, 0, -1);
 
 	// Camera
-	rtx::Camera camera(lookFrom, lookAt - lookFrom, rtx::Vec3(0, 1, 0), 1.0f, imageWidth, imageHeight, 40.0f);
+	rtx::Camera camera(lookFrom, lookAt - lookFrom, rtx::Vec3(0, 1, 0),
+		imageWidth, imageHeight, 40.0f,
+		10.0f, 3.4f);
 
 	// Rendering
 	rtx::Renderer renderer(imageWidth, imageHeight, 100, 50);

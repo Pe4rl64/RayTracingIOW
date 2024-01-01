@@ -63,14 +63,8 @@ namespace rtx {
 		Vec4 rayColor(Ray ray, const Hittable& world) const;
 
 		/// <summary>
-		/// Returns a random point inside the square bounds of a given pixel.
+		/// Initializes the vector iterator wrappers.
 		/// </summary>
-		/// <param name="pixelCenter">The center of the pixel from which to take a sample.</param>
-		/// <param name="horizontalDelta">The horintal delta (space) vector between each pixel inside the viewport.</param>
-		/// <param name="verticalDelta">The vertical delta (space) vector between each pixel inside the viewport.</param>
-		/// <returns>The random point.</returns>
-		Point3 pixelSampleSquare(const Point3& pixelCenter, const Vec3& horizontalDelta, const Vec3& verticalDelta) const;
-
 		void initIterators();
 
 	private:

@@ -36,6 +36,16 @@ rtx::Vec3 rtx::Vec3::randomUnit()
 	return random().unitVector();
 }
 
+rtx::Vec3 rtx::Vec3::randomInUnitDisk()
+{
+	Vec3 result(randomFloat(-1, 1), randomFloat(-1, 1), 0);
+
+	if (result.lengthSquared() > 1)
+		result.normalize();
+
+	return result;
+}
+
 float rtx::Vec3::dot(const Vec3& x, const Vec3& y)
 {
 	return x.x * y.x + x.y * y.y + x.z * y.z;
