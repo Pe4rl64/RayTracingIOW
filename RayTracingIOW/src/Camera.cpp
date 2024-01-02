@@ -50,7 +50,7 @@ rtx::Camera::Camera(const Vec3& center, const Vec3& forwardDirection, const Vec3
 	init();
 }
 
-const rtx::Ray& rtx::Camera::getRaySample(uint32_t x, uint32_t y) const
+const rtx::Ray rtx::Camera::getRaySample(uint32_t x, uint32_t y) const
 {
 	Point3 origin = m_defocusAngle <= 0 ? m_center : defocusDiskSample();
 	Vec3 direction = pixelSquareSample(x, y) - origin;
@@ -109,7 +109,7 @@ void rtx::Camera::init()
 	}
 }
 
-const rtx::Point3& rtx::Camera::defocusDiskSample() const
+const rtx::Point3 rtx::Camera::defocusDiskSample() const
 {
 	Vec3 p = Vec3::randomInUnitDisk();
 
@@ -118,7 +118,7 @@ const rtx::Point3& rtx::Camera::defocusDiskSample() const
 		+ (p.y * m_yDefocusDiskUnit);
 }
 
-const rtx::Point3& rtx::Camera::pixelSquareSample(uint32_t x, uint32_t y) const
+const rtx::Point3 rtx::Camera::pixelSquareSample(uint32_t x, uint32_t y) const
 {
 	// Between -0.5 and +0.5
 	float px = -0.5f + randomFloat(0, 1);

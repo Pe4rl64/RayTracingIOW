@@ -40,7 +40,7 @@ int main()
 
 	// Camera
 	rtx::Camera camera(lookFrom, lookAt - lookFrom, rtx::Vec3(0, 1, 0),
-		imageWidth, imageHeight, 40.0f,
+		imageWidth, imageHeight, 35.5f,
 		10.0f, 3.4f);
 
 	// Rendering
@@ -64,7 +64,7 @@ int main()
 		4 * imageWidth
 	))
 	{
-		std::cout << "Successful write to file!\n";
+		std::cout<< "Successful write to file!\n";
 	}
 	else
 	{

@@ -28,7 +28,7 @@ rtx::Material::ScatterResult rtx::Dielectric::scatter(const Ray& input, const Hi
     else 
         direction = Vec3::refract(unitDirection, record.normal, refractionRatio);
 
-    return { false, Ray(record.point, direction), attenuation };
+    return ScatterResult(false, Ray(record.point, direction), attenuation);
 }
 
 float rtx::Dielectric::reflectance(float cosine, float refractionIndex)

@@ -57,7 +57,7 @@ namespace rtx {
 		/// <param name="x">The x coordinate of the pixel (column).</param>
 		/// <param name="y">The y coordinate of the pixel (row).</param>
 		/// <returns>The sampled ray.</returns>
-		const Ray& getRaySample(uint32_t x, uint32_t y) const;
+		const Ray getRaySample(uint32_t x, uint32_t y) const;
 
 	private:
 		/// <summary>
@@ -65,9 +65,9 @@ namespace rtx {
 		/// </summary>
 		void init();
 
-		const Point3& defocusDiskSample() const;
+		const Point3 defocusDiskSample() const;
 
-		const Point3& pixelSquareSample(uint32_t x, uint32_t y) const;
+		const Point3 pixelSquareSample(uint32_t x, uint32_t y) const;
 		
 	private:
 		Vec3 m_center;
