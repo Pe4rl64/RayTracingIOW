@@ -53,6 +53,12 @@ namespace rtx {
 		static Vec3 randomUnit();
 
 		/// <summary>
+		/// Returns a unit vector with random x and y component values. The z component is null (0).
+		/// </summary>
+		/// <returns>The unit vector.</returns>
+		static Vec3 randomInUnitDisk();
+
+		/// <summary>
 		/// Calculates the dot product of x and y.
 		/// </summary>
 		/// <param name="x">Left hand side vector.</param>

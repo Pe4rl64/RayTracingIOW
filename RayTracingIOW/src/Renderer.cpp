@@ -68,18 +68,12 @@ void rtx::Renderer::perPixel(uint32_t x, uint32_t y, const Camera& camera, const
 
 	for (uint32_t i = 0; i < m_samples; ++i)
 	{
-		Point3 pixelSample = pixelSampleSquare(
-			camera.getRayDirections()[x + y * m_imageWidth],
-			camera.getPixelDeltaHorizontal(),
-			camera.getPixelDeltaVertical()
-		);
-
-		color += rayColor(Ray(camera.getCenter(), pixelSample), world);
+		color += rayColor(camera.getRaySample(x, y), world);
 	}
 
 	color /= (float)m_samples;
 	Interval interval(0, 1);
-	interval.clamp(color);
+	color = interval.clamp(color);
 
 	m_finalImage[x + y * m_imageWidth] = convertToRGBA(linearToGamma(color));
 }
@@ -110,15 +104,6 @@ rtx::Vec4 rtx::Renderer::rayColor(Ray ray, const Hittable& world) const
 	}
 
 	return color;
-}
-
-rtx::Point3 rtx::Renderer::pixelSampleSquare(const Point3& pixelCenter, const Vec3& horizontalDelta, const Vec3& verticalDelta) const
-{
-	// Between -0.5 and +0.5
-	float px = -0.5f + randomFloat(0, 1);
-	float py = -0.5f + randomFloat(0, 1);
-
-	return pixelCenter + (px * horizontalDelta) + (py * verticalDelta);
 }
 
 void rtx::Renderer::initIterators()

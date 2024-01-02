@@ -15,13 +15,14 @@ namespace rtx {
 		/// <param name="center">The center of the camera in 3d space.</param>
 		/// <param name="forwardDirection">The direction at which the camera is looking at.</param>
 		/// <param name="upDirection">The upwards direction relative to the camera.</param>
-		/// <param name="focalLength">The distance between the camera center and the viewport.</param>
 		/// <param name="imageWidth">The width of the final image.</param>
 		/// <param name="aspectRatio">The aspect ratio of image.</param>
 		/// <param name="horizontalFov">The horizontal view angle of the camera in degrees.</param>
+		/// <param name="defocusAngle">The variation angle of rays through each pixel in degrees.</param>
+		/// <param name="focusDistance">The distance from the camera center to the plane of perfect focus.</param>
 		Camera(const Vec3& center, const Vec3& forwardDirection, const Vec3& upDirection,
-			float focalLength, uint32_t imageWidth, float aspectRatio,
-			float horizontalFov
+			uint32_t imageWidth, float aspectRatio, float horizontalFov,
+			float defocusAngle, float focusDistance
 		);
 
 		/// <summary>
@@ -31,15 +32,17 @@ namespace rtx {
 		/// <param name="center">The center of the camera in 3d space.</param>
 		/// <param name="forwardDirection">The direction at which the camera is looking at.</param>
 		/// <param name="upDirection">The upwards direction relative to the camera.</param>
-		/// <param name="focalLength">The distance between the camera center and the viewport.</param>
 		/// <param name="imageWidth">The width of the final image.</param>
 		/// <param name="imageHeight">The heigth of the final image.</param>
 		/// <param name="horizontalFov">The horizontal view angle of the camera in degrees.</param>
+		/// <param name="defocusAngle">The variation angle of rays through each pixel in degrees.</param>
+		/// <param name="focusDistance">The distance from the camera center to the plane of perfect focus.</param>
 		Camera(const Vec3& center, const Vec3& m_forwardDirection, const Vec3& upDirection,
-			float focalLength, uint32_t imageWidth, uint32_t imageHeight,
-			float horizontalFov
+			uint32_t imageWidth, uint32_t imageHeight, float horizontalFov,
+			float defocusAngle, float focusDistance
 		);
 
+	public:
 		/// <summary>
 		/// Returns the camera center position.
 		/// </summary>
@@ -47,37 +50,34 @@ namespace rtx {
 		const Point3& getCenter() const { return m_center; }
 
 		/// <summary>
-		/// Returns the vertical delta (distance) between each pixel in the viewport.
+		/// Returns a sample ray for a given pixel, with the origin sampled from the camera defocus disk,
+		/// and the direction sampled from the square area around the pixel center.
+		/// If the defocus angle is &lt;= 0 then the origin will be the camera center.
 		/// </summary>
-		/// <returns>The vertical delta.</returns>
-		const Vec3& getPixelDeltaVertical() const { return m_pixelDeltaVertical; }
-
-		/// <summary>
-		/// Returns the horizontal delta (distance) between each pixel in the viewport.
-		/// </summary>
-		/// <returns></returns>
-		const Vec3& getPixelDeltaHorizontal() const { return m_pixelDeltaHorizontal; }
-
-		/// <summary>
-		/// Returns the cached ray directions from the camera center to the viewport pixels.
-		/// Beware that they are not normalized.
-		/// </summary>
-		/// <returns>The not normalized cached ray directions.</returns>
-		const std::vector<Vec3>& getRayDirections() const { return m_rayDirections; }
+		/// <param name="x">The x coordinate of the pixel (column).</param>
+		/// <param name="y">The y coordinate of the pixel (row).</param>
+		/// <returns>The sampled ray.</returns>
+		const Ray getRaySample(uint32_t x, uint32_t y) const;
 
 	private:
 		/// <summary>
-		/// Calculates the ray directions from the camera center to the viewport pixels.
+		/// Initializes the camera. To be run every time the options change.
 		/// </summary>
-		void calculateRayDirections();
+		void init();
+
+		const Point3 defocusDiskSample() const;
+
+		const Point3 pixelSquareSample(uint32_t x, uint32_t y) const;
 		
 	private:
 		Vec3 m_center;
 		Vec3 m_forwardDirection, m_upDirection;
-		float m_focalLength;
 		uint32_t m_imageWidth, m_imageHeight;
 		float m_aspectRatio;
 		float m_horizontalFov;
+		float m_defocusAngle;
+		float m_focusDistance;
+		Vec3 m_xDefocusDiskUnit, m_yDefocusDiskUnit;
 
 		Vec3 m_pixelDeltaVertical, m_pixelDeltaHorizontal;
 		std::vector<Vec3> m_rayDirections;
