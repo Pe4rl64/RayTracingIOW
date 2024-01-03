@@ -44,12 +44,14 @@ namespace rtx {
 	}
 
 	/// <summary>
-	/// Returns a random float.
+	/// Returns a random float in the maximum range allowed for them (except for the absolute max).
 	/// </summary>
 	/// <returns>A random float.</returns>
 	inline float randomFloat()
 	{
-		std::uniform_real_distribution<float> distribution;
+		static std::uniform_real_distribution<float> distribution(
+			std::numeric_limits<float>::min(), std::numeric_limits<float>::max()
+		);
 		static thread_local std::mt19937 generator;
 		return distribution(generator);
 	}
