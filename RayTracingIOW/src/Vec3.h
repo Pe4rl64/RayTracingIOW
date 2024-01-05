@@ -33,9 +33,9 @@ namespace rtx {
 		Vec3(float x, float y, float z);
 	public:
 		/// <summary>
-		/// Returns a vector with random component values.
+		/// Returns a vector with random component values in range [0, 1).
 		/// </summary>
-		/// <returns>A vector with random component values.</returns>
+		/// <returns>A vector with random component values in range [0, 1).</returns>
 		static Vec3 random();
 
 		/// <summary>
