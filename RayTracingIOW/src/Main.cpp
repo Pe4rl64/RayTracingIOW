@@ -49,7 +49,7 @@ int main()
 					sphereMaterial = std::make_shared<rtx::Metal>(albedo, fuzz);
 					world.add(std::make_shared<rtx::Sphere>(center, 0.2f, sphereMaterial));
 				}
-				else
+				elselasdklfsasdfjkalfjkd
 				{
 					sphereMaterial = std::make_shared<rtx::Dielectric>(1.5f);
 					world.add(std::make_shared<rtx::Sphere>(center, 0.2f, sphereMaterial));
